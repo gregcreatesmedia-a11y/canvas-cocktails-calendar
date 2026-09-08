@@ -39,6 +39,10 @@
       margin: 0 auto;
     }
 
+    /* =========================
+       SECTION TITLE
+    ========================= */
+
     .section-title {
       display: flex;
       align-items: center;
@@ -66,6 +70,10 @@
       white-space: nowrap;
     }
 
+    /* =========================
+       MONTH NAVIGATION
+    ========================= */
+
     .month-nav {
       display: grid;
       grid-template-columns: 50px 1fr 50px;
@@ -84,6 +92,7 @@
       font-weight: 700;
       line-height: 1;
       cursor: pointer;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -96,16 +105,6 @@
       );
 
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
-      transition: transform 0.15s ease, opacity 0.15s ease;
-    }
-
-    .month-arrow:hover {
-      transform: translateY(-1px);
-      opacity: 0.95;
-    }
-
-    .month-arrow:active {
-      transform: translateY(0);
     }
 
     .month-nav h2 {
@@ -116,6 +115,10 @@
       font-weight: 800;
       letter-spacing: 0.05em;
     }
+
+    /* =========================
+       DESKTOP CALENDAR
+    ========================= */
 
     .weekday-row {
       display: grid;
@@ -160,14 +163,19 @@
       top: 8px;
       right: 8px;
       z-index: 30;
+
       width: 29px;
       height: 29px;
+
       border-radius: 50%;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       background: #ffffff;
       color: #111111;
+
       font-size: 11px;
       font-weight: 800;
     }
@@ -176,14 +184,21 @@
       box-shadow: inset 0 0 0 3px var(--pink);
     }
 
+    /* =========================
+       DESKTOP EVENT
+    ========================= */
+
     .event-card {
       position: absolute;
       inset: 0;
       z-index: 1;
+
       display: flex;
       flex-direction: column;
+
       background: #111111;
       color: #ffffff;
+
       cursor: pointer;
     }
 
@@ -195,23 +210,23 @@
     }
 
     .event-copy {
+      min-height: 52px;
       padding: 8px 9px;
       background: #111111;
-      min-height: 52px;
     }
 
     .event-copy strong {
       display: block;
+      color: #ffffff;
       font-size: 11px;
       line-height: 1.2;
-      color: #ffffff;
     }
 
     .event-copy small {
       display: block;
       margin-top: 4px;
-      font-size: 10px;
       color: #bdbdbd;
+      font-size: 10px;
     }
 
     .more-events-button {
@@ -219,21 +234,31 @@
       left: 8px;
       bottom: 8px;
       z-index: 40;
+
       border: 0;
       border-radius: 4px;
+
       padding: 6px 8px;
+
       background: linear-gradient(
         90deg,
         var(--purple),
         var(--pink),
         var(--teal)
       );
+
       color: #ffffff;
+
       font-size: 9px;
       font-weight: 800;
       letter-spacing: 0.05em;
+
       cursor: pointer;
     }
+
+    /* =========================
+       MOBILE LIST
+    ========================= */
 
     .mobile-list {
       display: none;
@@ -241,22 +266,33 @@
 
     .no-events {
       padding: 24px 16px;
+
       border: 1px solid #dddddd;
       border-radius: 10px;
+
       text-align: center;
+
       color: #666666;
       background: #fafafa;
+
       font-size: 13px;
     }
+
+    /* =========================
+       POPUP BACKDROP
+    ========================= */
 
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 9999;
+
       display: none;
       align-items: center;
       justify-content: center;
+
       padding: 20px;
+
       background: rgba(0, 0, 0, 0.76);
     }
 
@@ -264,13 +300,21 @@
       display: flex;
     }
 
+    /* =========================
+       EVENT OVERVIEW
+    ========================= */
+
     .overview-modal {
       width: 100%;
       max-width: 560px;
       max-height: 88vh;
+
       overflow-y: auto;
+
       border-radius: 14px;
+
       background: #ffffff;
+
       box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
     }
 
@@ -283,7 +327,9 @@
     .overview-image {
       width: 100%;
       max-height: 420px;
+
       display: block;
+
       object-fit: cover;
     }
 
@@ -291,99 +337,137 @@
       position: absolute;
       top: 12px;
       right: 12px;
+
       width: 38px;
       height: 38px;
+
       border: 0;
       border-radius: 50%;
+
       background: rgba(0, 0, 0, 0.78);
       color: #ffffff;
+
       font-size: 24px;
+
       cursor: pointer;
     }
 
     .overview-content {
       padding: 20px;
+      background: #ffffff;
     }
 
     .overview-title {
       margin: 0 0 8px;
+
+      color: #111111;
+
       font-size: 22px;
       line-height: 1.15;
-      color: #111111;
     }
 
     .overview-meta {
       display: flex;
       flex-wrap: wrap;
+
       gap: 8px 14px;
+
       margin-bottom: 15px;
+
       color: #666666;
+
       font-size: 12px;
       font-weight: 700;
     }
 
     .overview-description {
       margin: 0 0 18px;
+
       color: #333333;
+
       font-size: 14px;
       line-height: 1.55;
     }
 
     .overview-subtitle {
       margin: 0 0 8px;
+
+      color: #111111;
+
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 0.08em;
-      color: #111111;
     }
 
     .overview-includes {
       margin: 0 0 18px;
       padding-left: 20px;
+
       color: #333333;
+
       font-size: 13px;
       line-height: 1.6;
     }
 
     .overview-age {
       display: inline-block;
+
       margin-bottom: 18px;
       padding: 7px 10px;
+
       border-radius: 5px;
+
       background: #f1f1f1;
       color: #333333;
+
       font-size: 11px;
       font-weight: 800;
     }
 
     .overview-ticket {
       display: flex;
+
       width: 100%;
       min-height: 46px;
+
       align-items: center;
       justify-content: center;
+
       border-radius: 7px;
+
       background: linear-gradient(
         90deg,
         var(--purple),
         var(--pink),
         var(--teal)
       );
+
       color: #ffffff;
+
       text-decoration: none;
+
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 0.08em;
     }
 
+    /* =========================
+       MULTIPLE EVENTS POPUP
+    ========================= */
+
     .day-events-modal {
       width: 100%;
       max-width: 520px;
       max-height: 82vh;
+
       overflow-y: auto;
+
       border-radius: 12px;
+
       background: #ffffff;
+
       padding: 18px;
+
       box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
     }
 
@@ -391,35 +475,48 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       gap: 12px;
+
       margin-bottom: 14px;
     }
 
     .day-events-top h3 {
       margin: 0;
+
+      color: #111111;
+
       font-size: 16px;
       line-height: 1.2;
-      color: #111111;
     }
 
     .day-events-close {
       flex: 0 0 auto;
+
       width: 34px;
       height: 34px;
+
       border: 0;
       border-radius: 50%;
+
       background: #111111;
       color: #ffffff;
+
       font-size: 20px;
+
       cursor: pointer;
     }
 
     .day-event-item {
       display: grid;
       grid-template-columns: 78px minmax(0, 1fr);
+
       gap: 12px;
+
       padding: 12px 0;
+
       border-top: 1px solid #dddddd;
+
       cursor: pointer;
     }
 
@@ -430,14 +527,19 @@
     .day-event-item img {
       width: 78px;
       height: 94px;
+
       object-fit: cover;
+
       border-radius: 6px;
     }
 
     .day-event-item strong {
       display: block;
+
       margin-bottom: 4px;
+
       color: #111111;
+
       font-size: 13px;
       line-height: 1.25;
     }
@@ -447,7 +549,12 @@
       font-size: 11px;
     }
 
+    /* ==================================================
+       MOBILE
+    ================================================== */
+
     @media (max-width: 700px) {
+
       body {
         padding: 14px 12px 28px;
       }
@@ -490,11 +597,16 @@
 
       .mobile-card {
         display: grid;
+
         grid-template-columns: 74px minmax(0, 1fr);
+
         min-height: 104px;
+
         overflow: hidden;
+
         border: 1px solid #dddddd;
         border-radius: 11px;
+
         background:
           radial-gradient(
             circle at 94% 10%,
@@ -512,16 +624,21 @@
             transparent 35%
           ),
           #ffffff;
+
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+
         cursor: pointer;
       }
 
       .mobile-date {
         display: flex;
         flex-direction: column;
+
         align-items: center;
         justify-content: center;
+
         color: #ffffff;
+
         background: linear-gradient(
           155deg,
           var(--purple),
@@ -532,6 +649,7 @@
 
       .mobile-date span {
         margin-bottom: 5px;
+
         font-size: 9px;
         font-weight: 800;
         letter-spacing: 0.1em;
@@ -544,14 +662,17 @@
 
       .mobile-info {
         padding: 12px 13px;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
+
         min-width: 0;
       }
 
       .mobile-title {
         margin-bottom: 4px;
+
         font-size: 13px;
         line-height: 1.25;
         font-weight: 800;
@@ -559,35 +680,95 @@
 
       .mobile-time {
         margin-bottom: 7px;
-        font-size: 11px;
+
         color: #666666;
+
+        font-size: 11px;
       }
 
       .mobile-details {
+        color: var(--purple);
+
         font-size: 9px;
         font-weight: 800;
         letter-spacing: 0.06em;
-        color: var(--purple);
       }
 
-      .modal-backdrop {
-        padding: 10px;
+      /* =============================================
+         MOBILE EVENT OVERVIEW FIX
+
+         The event overview becomes a full-height
+         white screen instead of a floating card.
+      ============================================= */
+
+      #overviewBackdrop {
+        padding: 0;
+
+        align-items: stretch;
+        justify-content: stretch;
+
+        background: #ffffff;
       }
 
-      .overview-modal {
-        max-height: 92vh;
+      #overviewBackdrop .overview-modal {
+        width: 100%;
+        max-width: none;
+
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        max-height: none;
+
+        margin: 0;
+
+        border-radius: 0;
+
+        overflow-y: auto;
+
+        background: #ffffff;
+
+        box-shadow: none;
       }
 
-      .overview-image {
-        max-height: 330px;
+      #overviewBackdrop .overview-image-wrap {
+        background: #ffffff;
       }
 
-      .overview-content {
-        padding: 17px;
+      #overviewBackdrop .overview-image {
+        width: 100%;
+        height: auto;
+        max-height: 320px;
+
+        object-fit: cover;
+      }
+
+      #overviewBackdrop .overview-content {
+        min-height: calc(100vh - 320px);
+        min-height: calc(100dvh - 320px);
+
+        padding: 18px 18px 40px;
+
+        background: #ffffff;
       }
 
       .overview-title {
         font-size: 19px;
+      }
+
+      /* Multiple-event selector remains a popup */
+
+      #dayEventsBackdrop {
+        padding: 12px;
+
+        align-items: center;
+        justify-content: center;
+
+        background: rgba(0, 0, 0, 0.76);
+      }
+
+      .day-events-modal {
+        max-height: 88vh;
+        border-radius: 12px;
       }
     }
   </style>
@@ -604,6 +785,7 @@
     </div>
 
     <div class="month-nav">
+
       <button
         id="prevMonth"
         class="month-arrow"
@@ -623,9 +805,11 @@
       >
         ›
       </button>
+
     </div>
 
     <div class="desktop-calendar">
+
       <div class="weekday-row">
         <div>SUN</div>
         <div>MON</div>
@@ -637,37 +821,75 @@
       </div>
 
       <div id="calendarGrid" class="calendar-grid"></div>
+
     </div>
 
     <div id="mobileList" class="mobile-list"></div>
 
   </div>
 
+
+  <!-- EVENT OVERVIEW -->
+
   <div id="overviewBackdrop" class="modal-backdrop">
+
     <div class="overview-modal">
 
       <div class="overview-image-wrap">
-        <img id="overviewImage" class="overview-image" src="" alt="">
-        <button id="overviewClose" class="overview-close" type="button">×</button>
+
+        <img
+          id="overviewImage"
+          class="overview-image"
+          src=""
+          alt=""
+        >
+
+        <button
+          id="overviewClose"
+          class="overview-close"
+          type="button"
+          aria-label="Close event details"
+        >
+          ×
+        </button>
+
       </div>
 
       <div class="overview-content">
-        <h2 id="overviewTitle" class="overview-title"></h2>
+
+        <h2
+          id="overviewTitle"
+          class="overview-title"
+        ></h2>
 
         <div class="overview-meta">
           <span id="overviewDate"></span>
           <span id="overviewTime"></span>
         </div>
 
-        <p id="overviewDescription" class="overview-description"></p>
+        <p
+          id="overviewDescription"
+          class="overview-description"
+        ></p>
 
         <div id="overviewIncludesWrap">
-          <h3 class="overview-subtitle">WHAT'S INCLUDED</h3>
-          <ul id="overviewIncludes" class="overview-includes"></ul>
+
+          <h3 class="overview-subtitle">
+            WHAT'S INCLUDED
+          </h3>
+
+          <ul
+            id="overviewIncludes"
+            class="overview-includes"
+          ></ul>
+
         </div>
 
         <div>
-          <span id="overviewAge" class="overview-age"></span>
+          <span
+            id="overviewAge"
+            class="overview-age"
+          ></span>
         </div>
 
         <a
@@ -679,100 +901,158 @@
         >
           GET TICKETS
         </a>
+
       </div>
 
     </div>
+
   </div>
 
+
+  <!-- MULTIPLE EVENTS ON SAME DATE -->
+
   <div id="dayEventsBackdrop" class="modal-backdrop">
+
     <div class="day-events-modal">
 
       <div class="day-events-top">
+
         <h3 id="dayEventsTitle"></h3>
+
         <button
           id="dayEventsClose"
           class="day-events-close"
           type="button"
+          aria-label="Close"
         >
           ×
         </button>
+
       </div>
 
       <div id="dayEventsList"></div>
 
     </div>
+
   </div>
 
+
   <script>
+
+    /*
+      =================================================
+      ADD / EDIT YOUR EVENTS HERE
+      =================================================
+
+      Multiple events can have the same date.
+
+      Replace the image and Eventbrite links
+      with your real links.
+    */
+
     const events = [
+
       {
         date: "2026-09-11",
         title: "Friday Night Paint & Sip",
         time: "7:00 PM",
-        image: "https://placehold.co/600x800/202020/FFFFFF?text=FRIDAY+PAINT+%26+SIP",
+
+        image:
+          "https://placehold.co/600x800/202020/FFFFFF?text=FRIDAY+PAINT+%26+SIP",
+
         description:
           "Kick off your weekend with painting, cocktails, music, and good energy at Canvas & Cocktails.",
+
         includes: [
           "Guided painting experience",
           "Canvas and painting supplies",
           "Music throughout the event",
           "Full bar available"
         ],
+
         age: "21+ Event",
-        link: "https://www.eventbrite.com/"
+
+        link:
+          "https://www.eventbrite.com/"
       },
+
 
       {
         date: "2026-09-18",
         title: "R&B Paint & Sip",
         time: "6:00 PM",
-        image: "https://placehold.co/600x800/7447A8/FFFFFF?text=R%26B+PAINT+%26+SIP",
+
+        image:
+          "https://placehold.co/600x800/7447A8/FFFFFF?text=R%26B+PAINT+%26+SIP",
+
         description:
           "Paint, sip, and vibe to R&B favorites while creating your own piece at Canvas & Cocktails.",
+
         includes: [
           "Guided painting experience",
           "Canvas and painting supplies",
           "R&B music",
           "Full bar available"
         ],
+
         age: "21+ Event",
-        link: "https://www.eventbrite.com/"
+
+        link:
+          "https://www.eventbrite.com/"
       },
+
 
       {
         date: "2026-09-18",
         title: "Comedy Paint & Sip",
         time: "8:00 PM",
-        image: "https://placehold.co/600x800/D84C9A/FFFFFF?text=COMEDY+PAINT+%26+SIP",
+
+        image:
+          "https://placehold.co/600x800/D84C9A/FFFFFF?text=COMEDY+PAINT+%26+SIP",
+
         description:
           "A paint and sip experience mixed with comedy, cocktails, and a fun night out with your crew.",
+
         includes: [
           "Painting experience",
           "Canvas and painting supplies",
           "Comedy entertainment",
           "Full bar available"
         ],
+
         age: "21+ Event",
-        link: "https://www.eventbrite.com/"
+
+        link:
+          "https://www.eventbrite.com/"
       },
+
 
       {
         date: "2026-09-18",
         title: "Late Night Open Paint",
         time: "10:00 PM",
-        image: "https://placehold.co/600x800/16ACC7/FFFFFF?text=LATE+NIGHT+OPEN+PAINT",
+
+        image:
+          "https://placehold.co/600x800/16ACC7/FFFFFF?text=LATE+NIGHT+OPEN+PAINT",
+
         description:
           "Come through for a relaxed late-night painting session with music, drinks, and room to create at your own pace.",
+
         includes: [
           "Canvas and painting supplies",
           "Open painting session",
           "Music",
           "Full bar available"
         ],
+
         age: "21+ Event",
-        link: "https://www.eventbrite.com/"
+
+        link:
+          "https://www.eventbrite.com/"
       }
+
     ];
+
 
     const monthNames = [
       "JANUARY",
@@ -789,6 +1069,7 @@
       "DECEMBER"
     ];
 
+
     const weekdayNames = [
       "SUN",
       "MON",
@@ -799,133 +1080,298 @@
       "SAT"
     ];
 
-    const calendarGrid = document.getElementById("calendarGrid");
-    const mobileList = document.getElementById("mobileList");
-    const monthTitle = document.getElementById("monthTitle");
-    const prevMonth = document.getElementById("prevMonth");
-    const nextMonth = document.getElementById("nextMonth");
 
-    const overviewBackdrop = document.getElementById("overviewBackdrop");
-    const overviewClose = document.getElementById("overviewClose");
-    const overviewImage = document.getElementById("overviewImage");
-    const overviewTitle = document.getElementById("overviewTitle");
-    const overviewDate = document.getElementById("overviewDate");
-    const overviewTime = document.getElementById("overviewTime");
-    const overviewDescription = document.getElementById("overviewDescription");
-    const overviewIncludes = document.getElementById("overviewIncludes");
-    const overviewIncludesWrap = document.getElementById("overviewIncludesWrap");
-    const overviewAge = document.getElementById("overviewAge");
-    const overviewTicket = document.getElementById("overviewTicket");
+    const calendarGrid =
+      document.getElementById("calendarGrid");
 
-    const dayEventsBackdrop = document.getElementById("dayEventsBackdrop");
-    const dayEventsClose = document.getElementById("dayEventsClose");
-    const dayEventsTitle = document.getElementById("dayEventsTitle");
-    const dayEventsList = document.getElementById("dayEventsList");
+    const mobileList =
+      document.getElementById("mobileList");
+
+    const monthTitle =
+      document.getElementById("monthTitle");
+
+    const prevMonth =
+      document.getElementById("prevMonth");
+
+    const nextMonth =
+      document.getElementById("nextMonth");
+
+
+    const overviewBackdrop =
+      document.getElementById("overviewBackdrop");
+
+    const overviewClose =
+      document.getElementById("overviewClose");
+
+    const overviewImage =
+      document.getElementById("overviewImage");
+
+    const overviewTitle =
+      document.getElementById("overviewTitle");
+
+    const overviewDate =
+      document.getElementById("overviewDate");
+
+    const overviewTime =
+      document.getElementById("overviewTime");
+
+    const overviewDescription =
+      document.getElementById("overviewDescription");
+
+    const overviewIncludes =
+      document.getElementById("overviewIncludes");
+
+    const overviewIncludesWrap =
+      document.getElementById("overviewIncludesWrap");
+
+    const overviewAge =
+      document.getElementById("overviewAge");
+
+    const overviewTicket =
+      document.getElementById("overviewTicket");
+
+
+    const dayEventsBackdrop =
+      document.getElementById("dayEventsBackdrop");
+
+    const dayEventsClose =
+      document.getElementById("dayEventsClose");
+
+    const dayEventsTitle =
+      document.getElementById("dayEventsTitle");
+
+    const dayEventsList =
+      document.getElementById("dayEventsList");
+
 
     const today = new Date();
 
     let displayYear = today.getFullYear();
     let displayMonth = today.getMonth();
 
+
     function pad(value) {
       return String(value).padStart(2, "0");
     }
+
 
     function makeDateKey(year, month, day) {
       return `${year}-${pad(month + 1)}-${pad(day)}`;
     }
 
+
     function formatEventDate(dateString) {
-      const parts = dateString.split("-").map(Number);
 
-      const date = new Date(
-        parts[0],
-        parts[1] - 1,
-        parts[2]
+      const parts =
+        dateString
+          .split("-")
+          .map(Number);
+
+      const date =
+        new Date(
+          parts[0],
+          parts[1] - 1,
+          parts[2]
+        );
+
+      return date.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric"
+        }
       );
-
-      return date.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric"
-      });
     }
 
+
     function getEventsForDate(year, month, day) {
-      const key = makeDateKey(year, month, day);
+
+      const key =
+        makeDateKey(
+          year,
+          month,
+          day
+        );
 
       return events
         .filter(event => event.date === key)
-        .sort((a, b) => a.time.localeCompare(b.time));
+        .sort((a, b) =>
+          a.time.localeCompare(b.time)
+        );
     }
 
-    function openOverview(event) {
-      overviewImage.src = event.image;
-      overviewImage.alt = event.title;
 
-      overviewTitle.textContent = event.title;
-      overviewDate.textContent = formatEventDate(event.date);
-      overviewTime.textContent = event.time;
-      overviewDescription.textContent = event.description || "";
+    /* =========================
+       OPEN EVENT OVERVIEW
+    ========================= */
+
+    function openOverview(event) {
+
+      overviewImage.src =
+        event.image;
+
+      overviewImage.alt =
+        event.title;
+
+      overviewTitle.textContent =
+        event.title;
+
+      overviewDate.textContent =
+        formatEventDate(event.date);
+
+      overviewTime.textContent =
+        event.time;
+
+      overviewDescription.textContent =
+        event.description || "";
 
       overviewIncludes.innerHTML = "";
 
-      if (event.includes && event.includes.length > 0) {
-        overviewIncludesWrap.style.display = "block";
+      if (
+        event.includes &&
+        event.includes.length > 0
+      ) {
+
+        overviewIncludesWrap.style.display =
+          "block";
 
         event.includes.forEach(item => {
-          const li = document.createElement("li");
+
+          const li =
+            document.createElement("li");
+
           li.textContent = item;
+
           overviewIncludes.appendChild(li);
+
         });
+
       } else {
-        overviewIncludesWrap.style.display = "none";
+
+        overviewIncludesWrap.style.display =
+          "none";
+
       }
+
 
       if (event.age) {
-        overviewAge.style.display = "inline-block";
-        overviewAge.textContent = event.age;
+
+        overviewAge.style.display =
+          "inline-block";
+
+        overviewAge.textContent =
+          event.age;
+
       } else {
-        overviewAge.style.display = "none";
+
+        overviewAge.style.display =
+          "none";
+
       }
 
-      overviewTicket.href = event.link;
 
-      overviewBackdrop.classList.add("open");
+      overviewTicket.href =
+        event.link;
+
+
+      overviewBackdrop.classList.add(
+        "open"
+      );
+
+
+      /*
+        Start popup at the top every time.
+      */
+
+      const modal =
+        overviewBackdrop.querySelector(
+          ".overview-modal"
+        );
+
+      modal.scrollTop = 0;
     }
+
 
     function closeOverview() {
-      overviewBackdrop.classList.remove("open");
+
+      overviewBackdrop.classList.remove(
+        "open"
+      );
+
     }
 
-    function openDayEvents(year, month, day, dayEvents) {
-      const date = new Date(year, month, day);
+
+    /* =========================
+       MULTIPLE EVENTS
+    ========================= */
+
+    function openDayEvents(
+      year,
+      month,
+      day,
+      dayEvents
+    ) {
+
+      const date =
+        new Date(
+          year,
+          month,
+          day
+        );
+
 
       dayEventsTitle.textContent =
-        date.toLocaleDateString("en-US", {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-          year: "numeric"
-        });
+        date.toLocaleDateString(
+          "en-US",
+          {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          }
+        );
+
 
       dayEventsList.innerHTML = "";
 
+
       dayEvents.forEach(event => {
-        const item = document.createElement("div");
-        item.className = "day-event-item";
 
-        const image = document.createElement("img");
-        image.src = event.image;
-        image.alt = event.title;
+        const item =
+          document.createElement("div");
 
-        const info = document.createElement("div");
+        item.className =
+          "day-event-item";
 
-        const title = document.createElement("strong");
-        title.textContent = event.title;
 
-        const time = document.createElement("small");
-        time.textContent = event.time;
+        const image =
+          document.createElement("img");
+
+        image.src =
+          event.image;
+
+        image.alt =
+          event.title;
+
+
+        const info =
+          document.createElement("div");
+
+
+        const title =
+          document.createElement("strong");
+
+        title.textContent =
+          event.title;
+
+
+        const time =
+          document.createElement("small");
+
+        time.textContent =
+          event.time;
+
 
         info.appendChild(title);
         info.appendChild(time);
@@ -933,267 +1379,684 @@
         item.appendChild(image);
         item.appendChild(info);
 
-        item.addEventListener("click", () => {
-          dayEventsBackdrop.classList.remove("open");
-          openOverview(event);
-        });
+
+        item.addEventListener(
+          "click",
+          () => {
+
+            dayEventsBackdrop.classList.remove(
+              "open"
+            );
+
+            openOverview(event);
+
+          }
+        );
+
 
         dayEventsList.appendChild(item);
+
       });
 
-      dayEventsBackdrop.classList.add("open");
+
+      dayEventsBackdrop.classList.add(
+        "open"
+      );
+
     }
+
 
     function closeDayEvents() {
-      dayEventsBackdrop.classList.remove("open");
+
+      dayEventsBackdrop.classList.remove(
+        "open"
+      );
+
     }
 
-    overviewClose.addEventListener("click", closeOverview);
 
-    overviewBackdrop.addEventListener("click", event => {
-      if (event.target === overviewBackdrop) {
-        closeOverview();
-      }
-    });
+    overviewClose.addEventListener(
+      "click",
+      closeOverview
+    );
 
-    dayEventsClose.addEventListener("click", closeDayEvents);
 
-    dayEventsBackdrop.addEventListener("click", event => {
-      if (event.target === dayEventsBackdrop) {
-        closeDayEvents();
-      }
-    });
-
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        closeOverview();
-        closeDayEvents();
-      }
-    });
-
-    function renderDesktopCalendar() {
-      calendarGrid.innerHTML = "";
-
-      const firstWeekday =
-        new Date(displayYear, displayMonth, 1).getDay();
-
-      const daysInMonth =
-        new Date(displayYear, displayMonth + 1, 0).getDate();
-
-      const totalUsedCells = firstWeekday + daysInMonth;
-      const totalCells = totalUsedCells <= 35 ? 35 : 42;
-
-      for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
-        const cell = document.createElement("div");
-        cell.className = "day-cell";
-
-        const day = cellIndex - firstWeekday + 1;
-
-        if (day < 1 || day > daysInMonth) {
-          cell.classList.add("empty");
-          calendarGrid.appendChild(cell);
-          continue;
-        }
-
-        const number = document.createElement("div");
-        number.className = "day-number";
-        number.textContent = day;
-
-        cell.appendChild(number);
+    overviewBackdrop.addEventListener(
+      "click",
+      event => {
 
         if (
-          displayYear === today.getFullYear() &&
-          displayMonth === today.getMonth() &&
-          day === today.getDate()
+          event.target ===
+          overviewBackdrop
         ) {
-          cell.classList.add("today");
+
+          closeOverview();
+
         }
+
+      }
+    );
+
+
+    dayEventsClose.addEventListener(
+      "click",
+      closeDayEvents
+    );
+
+
+    dayEventsBackdrop.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          dayEventsBackdrop
+        ) {
+
+          closeDayEvents();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Escape") {
+
+          closeOverview();
+          closeDayEvents();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       DESKTOP CALENDAR
+    ========================= */
+
+    function renderDesktopCalendar() {
+
+      calendarGrid.innerHTML = "";
+
+
+      const firstWeekday =
+        new Date(
+          displayYear,
+          displayMonth,
+          1
+        ).getDay();
+
+
+      const daysInMonth =
+        new Date(
+          displayYear,
+          displayMonth + 1,
+          0
+        ).getDate();
+
+
+      const totalUsedCells =
+        firstWeekday + daysInMonth;
+
+
+      const totalCells =
+        totalUsedCells <= 35
+          ? 35
+          : 42;
+
+
+      for (
+        let cellIndex = 0;
+        cellIndex < totalCells;
+        cellIndex++
+      ) {
+
+        const cell =
+          document.createElement("div");
+
+        cell.className =
+          "day-cell";
+
+
+        const day =
+          cellIndex -
+          firstWeekday +
+          1;
+
+
+        if (
+          day < 1 ||
+          day > daysInMonth
+        ) {
+
+          cell.classList.add(
+            "empty"
+          );
+
+          calendarGrid.appendChild(
+            cell
+          );
+
+          continue;
+
+        }
+
+
+        const number =
+          document.createElement("div");
+
+        number.className =
+          "day-number";
+
+        number.textContent =
+          day;
+
+
+        cell.appendChild(
+          number
+        );
+
+
+        if (
+          displayYear ===
+            today.getFullYear() &&
+          displayMonth ===
+            today.getMonth() &&
+          day ===
+            today.getDate()
+        ) {
+
+          cell.classList.add(
+            "today"
+          );
+
+        }
+
 
         const dayEvents =
-          getEventsForDate(displayYear, displayMonth, day);
+          getEventsForDate(
+            displayYear,
+            displayMonth,
+            day
+          );
 
-        if (dayEvents.length > 0) {
-          const event = dayEvents[0];
 
-          const card = document.createElement("div");
-          card.className = "event-card";
+        if (
+          dayEvents.length > 0
+        ) {
 
-          const image = document.createElement("img");
-          image.src = event.image;
-          image.alt = event.title;
+          const event =
+            dayEvents[0];
 
-          const copy = document.createElement("div");
-          copy.className = "event-copy";
 
-          const eventTitle = document.createElement("strong");
-          eventTitle.textContent = event.title;
+          const card =
+            document.createElement(
+              "div"
+            );
 
-          const eventTime = document.createElement("small");
-          eventTime.textContent = event.time;
+          card.className =
+            "event-card";
 
-          copy.appendChild(eventTitle);
-          copy.appendChild(eventTime);
 
-          card.appendChild(image);
-          card.appendChild(copy);
+          const image =
+            document.createElement(
+              "img"
+            );
 
-          card.addEventListener("click", () => {
-            openOverview(event);
-          });
+          image.src =
+            event.image;
 
-          cell.appendChild(card);
+          image.alt =
+            event.title;
 
-          if (dayEvents.length > 1) {
-            const moreButton = document.createElement("button");
 
-            moreButton.className = "more-events-button";
-            moreButton.type = "button";
-            moreButton.textContent = `+${dayEvents.length - 1} MORE`;
+          const copy =
+            document.createElement(
+              "div"
+            );
 
-            moreButton.addEventListener("click", eventClick => {
-              eventClick.preventDefault();
-              eventClick.stopPropagation();
+          copy.className =
+            "event-copy";
 
-              openDayEvents(
-                displayYear,
-                displayMonth,
-                day,
-                dayEvents
+
+          const eventTitle =
+            document.createElement(
+              "strong"
+            );
+
+          eventTitle.textContent =
+            event.title;
+
+
+          const eventTime =
+            document.createElement(
+              "small"
+            );
+
+          eventTime.textContent =
+            event.time;
+
+
+          copy.appendChild(
+            eventTitle
+          );
+
+          copy.appendChild(
+            eventTime
+          );
+
+
+          card.appendChild(
+            image
+          );
+
+          card.appendChild(
+            copy
+          );
+
+
+          card.addEventListener(
+            "click",
+            () => {
+
+              openOverview(
+                event
               );
-            });
 
-            cell.appendChild(moreButton);
+            }
+          );
+
+
+          cell.appendChild(
+            card
+          );
+
+
+          if (
+            dayEvents.length > 1
+          ) {
+
+            const moreButton =
+              document.createElement(
+                "button"
+              );
+
+
+            moreButton.className =
+              "more-events-button";
+
+
+            moreButton.type =
+              "button";
+
+
+            moreButton.textContent =
+              `+${dayEvents.length - 1} MORE`;
+
+
+            moreButton.addEventListener(
+              "click",
+              clickEvent => {
+
+                clickEvent.preventDefault();
+                clickEvent.stopPropagation();
+
+
+                openDayEvents(
+                  displayYear,
+                  displayMonth,
+                  day,
+                  dayEvents
+                );
+
+              }
+            );
+
+
+            cell.appendChild(
+              moreButton
+            );
+
           }
+
         }
 
-        calendarGrid.appendChild(cell);
+
+        calendarGrid.appendChild(
+          cell
+        );
+
       }
+
     }
 
+
+    /* =========================
+       MOBILE EVENT LIST
+    ========================= */
+
     function renderMobileList() {
+
       mobileList.innerHTML = "";
 
-      const monthEvents = events
-        .filter(event => {
-          const parts = event.date.split("-").map(Number);
 
-          const year = parts[0];
-          const month = parts[1];
+      const monthEvents =
+        events
+          .filter(event => {
 
-          return (
-            year === displayYear &&
-            month - 1 === displayMonth
+            const parts =
+              event.date
+                .split("-")
+                .map(Number);
+
+
+            const year =
+              parts[0];
+
+            const month =
+              parts[1];
+
+
+            return (
+              year === displayYear &&
+              month - 1 === displayMonth
+            );
+
+          })
+
+          .sort((a, b) => {
+
+            if (
+              a.date !== b.date
+            ) {
+
+              return a.date.localeCompare(
+                b.date
+              );
+
+            }
+
+            return a.time.localeCompare(
+              b.time
+            );
+
+          });
+
+
+      if (
+        monthEvents.length === 0
+      ) {
+
+        const emptyMessage =
+          document.createElement(
+            "div"
           );
-        })
-        .sort((a, b) => {
-          if (a.date !== b.date) {
-            return a.date.localeCompare(b.date);
-          }
 
-          return a.time.localeCompare(b.time);
-        });
 
-      if (monthEvents.length === 0) {
-        const emptyMessage = document.createElement("div");
+        emptyMessage.className =
+          "no-events";
 
-        emptyMessage.className = "no-events";
+
         emptyMessage.textContent =
           "No events scheduled for this month.";
 
-        mobileList.appendChild(emptyMessage);
-        return;
-      }
 
-      monthEvents.forEach(event => {
-        const parts = event.date.split("-").map(Number);
-
-        const year = parts[0];
-        const month = parts[1];
-        const day = parts[2];
-
-        const eventDate = new Date(
-          year,
-          month - 1,
-          day
+        mobileList.appendChild(
+          emptyMessage
         );
 
-        const card = document.createElement("div");
-        card.className = "mobile-card";
 
-        const dateBlock = document.createElement("div");
-        dateBlock.className = "mobile-date";
+        return;
 
-        const weekday = document.createElement("span");
-        weekday.textContent =
-          weekdayNames[eventDate.getDay()];
+      }
 
-        const dayNumber = document.createElement("strong");
-        dayNumber.textContent = day;
 
-        dateBlock.appendChild(weekday);
-        dateBlock.appendChild(dayNumber);
+      monthEvents.forEach(
+        event => {
 
-        const info = document.createElement("div");
-        info.className = "mobile-info";
+          const parts =
+            event.date
+              .split("-")
+              .map(Number);
 
-        const title = document.createElement("div");
-        title.className = "mobile-title";
-        title.textContent = event.title;
 
-        const time = document.createElement("div");
-        time.className = "mobile-time";
-        time.textContent = event.time;
+          const year =
+            parts[0];
 
-        const details = document.createElement("div");
-        details.className = "mobile-details";
-        details.textContent = "VIEW DETAILS ›";
+          const month =
+            parts[1];
 
-        info.appendChild(title);
-        info.appendChild(time);
-        info.appendChild(details);
+          const day =
+            parts[2];
 
-        card.appendChild(dateBlock);
-        card.appendChild(info);
 
-        card.addEventListener("click", () => {
-          openOverview(event);
-        });
+          const eventDate =
+            new Date(
+              year,
+              month - 1,
+              day
+            );
 
-        mobileList.appendChild(card);
-      });
+
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.className =
+            "mobile-card";
+
+
+          const dateBlock =
+            document.createElement(
+              "div"
+            );
+
+          dateBlock.className =
+            "mobile-date";
+
+
+          const weekday =
+            document.createElement(
+              "span"
+            );
+
+
+          weekday.textContent =
+            weekdayNames[
+              eventDate.getDay()
+            ];
+
+
+          const dayNumber =
+            document.createElement(
+              "strong"
+            );
+
+
+          dayNumber.textContent =
+            day;
+
+
+          dateBlock.appendChild(
+            weekday
+          );
+
+          dateBlock.appendChild(
+            dayNumber
+          );
+
+
+          const info =
+            document.createElement(
+              "div"
+            );
+
+          info.className =
+            "mobile-info";
+
+
+          const title =
+            document.createElement(
+              "div"
+            );
+
+          title.className =
+            "mobile-title";
+
+          title.textContent =
+            event.title;
+
+
+          const time =
+            document.createElement(
+              "div"
+            );
+
+          time.className =
+            "mobile-time";
+
+          time.textContent =
+            event.time;
+
+
+          const details =
+            document.createElement(
+              "div"
+            );
+
+          details.className =
+            "mobile-details";
+
+          details.textContent =
+            "VIEW DETAILS ›";
+
+
+          info.appendChild(
+            title
+          );
+
+          info.appendChild(
+            time
+          );
+
+          info.appendChild(
+            details
+          );
+
+
+          card.appendChild(
+            dateBlock
+          );
+
+          card.appendChild(
+            info
+          );
+
+
+          card.addEventListener(
+            "click",
+            () => {
+
+              openOverview(
+                event
+              );
+
+            }
+          );
+
+
+          mobileList.appendChild(
+            card
+          );
+
+        }
+      );
+
     }
 
+
+    /* =========================
+       RENDER
+    ========================= */
+
     function renderCalendar() {
+
       monthTitle.textContent =
         `${monthNames[displayMonth]} ${displayYear}`;
 
+
       renderDesktopCalendar();
+
       renderMobileList();
+
     }
 
-    prevMonth.addEventListener("click", () => {
-      displayMonth--;
 
-      if (displayMonth < 0) {
-        displayMonth = 11;
-        displayYear--;
+    /* =========================
+       PREVIOUS MONTH
+    ========================= */
+
+    prevMonth.addEventListener(
+      "click",
+      () => {
+
+        displayMonth--;
+
+
+        if (
+          displayMonth < 0
+        ) {
+
+          displayMonth = 11;
+
+          displayYear--;
+
+        }
+
+
+        renderCalendar();
+
       }
+    );
 
-      renderCalendar();
-    });
 
-    nextMonth.addEventListener("click", () => {
-      displayMonth++;
+    /* =========================
+       NEXT MONTH
+    ========================= */
 
-      if (displayMonth > 11) {
-        displayMonth = 0;
-        displayYear++;
+    nextMonth.addEventListener(
+      "click",
+      () => {
+
+        displayMonth++;
+
+
+        if (
+          displayMonth > 11
+        ) {
+
+          displayMonth = 0;
+
+          displayYear++;
+
+        }
+
+
+        renderCalendar();
+
       }
+    );
 
-      renderCalendar();
-    });
 
     renderCalendar();
+
   </script>
 
 </body>
