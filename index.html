@@ -79,26 +79,36 @@
     .month-nav button {
       width: 46px;
       height: 46px;
-      border: 0;
-      border-radius: 6px;
+      border: none;
+      border-radius: 7px;
       color: #ffffff;
       font-size: 30px;
+      font-weight: 700;
       line-height: 1;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+
+      background: linear-gradient(
+        135deg,
+        var(--purple) 0%,
+        var(--pink) 55%,
+        var(--teal) 100%
+      );
+
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    #prevMonth,
-#nextMonth {
-  background: linear-gradient(
-    135deg,
-    var(--purple),
-    var(--pink),
-    var(--teal)
-  );
-}
+    .month-nav button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .month-nav button:active {
+      transform: translateY(0);
+    }
 
     .month-nav h2 {
       margin: 0;
@@ -214,7 +224,12 @@
       border: 0;
       border-radius: 4px;
       padding: 6px 8px;
-      background: linear-gradient(90deg, var(--purple), var(--pink));
+      background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--pink),
+        var(--teal)
+      );
       color: #ffffff;
       font-size: 9px;
       font-weight: 800;
@@ -224,10 +239,6 @@
 
     .mobile-list {
       display: none;
-    }
-
-    .mobile-card {
-      cursor: pointer;
     }
 
     .no-events {
@@ -463,6 +474,13 @@
         width: 40px;
         height: 40px;
         font-size: 27px;
+
+        background: linear-gradient(
+          135deg,
+          var(--purple) 0%,
+          var(--pink) 55%,
+          var(--teal) 100%
+        );
       }
 
       .month-nav h2 {
@@ -504,6 +522,7 @@
           ),
           #ffffff;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        cursor: pointer;
       }
 
       .mobile-date {
@@ -562,7 +581,6 @@
 
       .modal-backdrop {
         padding: 10px;
-        align-items: center;
       }
 
       .overview-modal {
@@ -618,7 +636,6 @@
 
   </div>
 
-  <!-- EVENT OVERVIEW POPUP -->
   <div id="overviewBackdrop" class="modal-backdrop">
     <div class="overview-modal">
 
@@ -660,7 +677,6 @@
     </div>
   </div>
 
-  <!-- MULTIPLE EVENTS ON SAME DAY POPUP -->
   <div id="dayEventsBackdrop" class="modal-backdrop">
     <div class="day-events-modal">
 
@@ -681,26 +697,7 @@
   </div>
 
   <script>
-    /*
-      ==================================================
-      EDIT YOUR EVENTS HERE
-      ==================================================
-
-      You can add:
-      date
-      title
-      time
-      image
-      description
-      includes
-      age
-      link
-
-      Multiple events can use the SAME date.
-    */
-
     const events = [
-
       {
         date: "2026-09-11",
         title: "Friday Night Paint & Sip",
@@ -768,7 +765,6 @@
         age: "21+ Event",
         link: "https://www.eventbrite.com/"
       }
-
     ];
 
     const monthNames = [
@@ -857,7 +853,6 @@
     }
 
     function openOverview(event) {
-
       overviewImage.src = event.image;
       overviewImage.alt = event.title;
 
@@ -897,7 +892,6 @@
     }
 
     function openDayEvents(year, month, day, dayEvents) {
-
       const date = new Date(year, month, day);
 
       dayEventsTitle.textContent =
@@ -911,7 +905,6 @@
       dayEventsList.innerHTML = "";
 
       dayEvents.forEach(event => {
-
         const item = document.createElement("div");
         item.className = "day-event-item";
 
@@ -972,7 +965,6 @@
     });
 
     function renderDesktopCalendar() {
-
       calendarGrid.innerHTML = "";
 
       const firstWeekday =
@@ -982,16 +974,9 @@
         new Date(displayYear, displayMonth + 1, 0).getDate();
 
       const totalUsedCells = firstWeekday + daysInMonth;
+      const totalCells = totalUsedCells <= 35 ? 35 : 42;
 
-      const totalCells =
-        totalUsedCells <= 35 ? 35 : 42;
-
-      for (
-        let cellIndex = 0;
-        cellIndex < totalCells;
-        cellIndex++
-      ) {
-
+      for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
         const cell = document.createElement("div");
         cell.className = "day-cell";
 
@@ -1018,14 +1003,9 @@
         }
 
         const dayEvents =
-          getEventsForDate(
-            displayYear,
-            displayMonth,
-            day
-          );
+          getEventsForDate(displayYear, displayMonth, day);
 
         if (dayEvents.length > 0) {
-
           const event = dayEvents[0];
 
           const card = document.createElement("div");
@@ -1038,14 +1018,10 @@
           const copy = document.createElement("div");
           copy.className = "event-copy";
 
-          const eventTitle =
-            document.createElement("strong");
-
+          const eventTitle = document.createElement("strong");
           eventTitle.textContent = event.title;
 
-          const eventTime =
-            document.createElement("small");
-
+          const eventTime = document.createElement("small");
           eventTime.textContent = event.time;
 
           copy.appendChild(eventTitle);
@@ -1061,32 +1037,23 @@
           cell.appendChild(card);
 
           if (dayEvents.length > 1) {
+            const moreButton = document.createElement("button");
 
-            const moreButton =
-              document.createElement("button");
-
-            moreButton.className =
-              "more-events-button";
-
+            moreButton.className = "more-events-button";
             moreButton.type = "button";
+            moreButton.textContent = `+${dayEvents.length - 1} MORE`;
 
-            moreButton.textContent =
-              `+${dayEvents.length - 1} MORE`;
+            moreButton.addEventListener("click", eventClick => {
+              eventClick.preventDefault();
+              eventClick.stopPropagation();
 
-            moreButton.addEventListener(
-              "click",
-              eventClick => {
-                eventClick.preventDefault();
-                eventClick.stopPropagation();
-
-                openDayEvents(
-                  displayYear,
-                  displayMonth,
-                  day,
-                  dayEvents
-                );
-              }
-            );
+              openDayEvents(
+                displayYear,
+                displayMonth,
+                day,
+                dayEvents
+              );
+            });
 
             cell.appendChild(moreButton);
           }
@@ -1097,16 +1064,11 @@
     }
 
     function renderMobileList() {
-
       mobileList.innerHTML = "";
 
       const monthEvents = events
         .filter(event => {
-
-          const parts =
-            event.date
-              .split("-")
-              .map(Number);
+          const parts = event.date.split("-").map(Number);
 
           const year = parts[0];
           const month = parts[1];
@@ -1115,97 +1077,68 @@
             year === displayYear &&
             month - 1 === displayMonth
           );
-
         })
         .sort((a, b) => {
-
           if (a.date !== b.date) {
             return a.date.localeCompare(b.date);
           }
 
           return a.time.localeCompare(b.time);
-
         });
 
       if (monthEvents.length === 0) {
-
-        const emptyMessage =
-          document.createElement("div");
+        const emptyMessage = document.createElement("div");
 
         emptyMessage.className = "no-events";
-
         emptyMessage.textContent =
           "No events scheduled for this month.";
 
         mobileList.appendChild(emptyMessage);
-
         return;
       }
 
       monthEvents.forEach(event => {
-
-        const parts =
-          event.date
-            .split("-")
-            .map(Number);
+        const parts = event.date.split("-").map(Number);
 
         const year = parts[0];
         const month = parts[1];
         const day = parts[2];
 
-        const eventDate =
-          new Date(
-            year,
-            month - 1,
-            day
-          );
+        const eventDate = new Date(
+          year,
+          month - 1,
+          day
+        );
 
-        const card =
-          document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "mobile-card";
 
-        const dateBlock =
-          document.createElement("div");
-
+        const dateBlock = document.createElement("div");
         dateBlock.className = "mobile-date";
 
-        const weekday =
-          document.createElement("span");
+        const weekday = document.createElement("span");
 
         weekday.textContent =
-          weekdayNames[
-            eventDate.getDay()
-          ];
+          weekdayNames[eventDate.getDay()];
 
-        const dayNumber =
-          document.createElement("strong");
-
+        const dayNumber = document.createElement("strong");
         dayNumber.textContent = day;
 
         dateBlock.appendChild(weekday);
         dateBlock.appendChild(dayNumber);
 
-        const info =
-          document.createElement("div");
-
+        const info = document.createElement("div");
         info.className = "mobile-info";
 
-        const title =
-          document.createElement("div");
-
+        const title = document.createElement("div");
         title.className = "mobile-title";
         title.textContent = event.title;
 
-        const time =
-          document.createElement("div");
-
+        const time = document.createElement("div");
         time.className = "mobile-time";
         time.textContent = event.time;
 
-        const details =
-          document.createElement("div");
-
+        const details = document.createElement("div");
         details.className = "mobile-details";
         details.textContent = "VIEW DETAILS ›";
 
@@ -1221,22 +1154,18 @@
         });
 
         mobileList.appendChild(card);
-
       });
     }
 
     function renderCalendar() {
-
       monthTitle.textContent =
         `${monthNames[displayMonth]} ${displayYear}`;
 
       renderDesktopCalendar();
       renderMobileList();
-
     }
 
     prevMonth.addEventListener("click", () => {
-
       displayMonth--;
 
       if (displayMonth < 0) {
@@ -1248,7 +1177,6 @@
     });
 
     nextMonth.addEventListener("click", () => {
-
       displayMonth++;
 
       if (displayMonth > 11) {
@@ -1260,7 +1188,6 @@
     });
 
     renderCalendar();
-
   </script>
 
 </body>
