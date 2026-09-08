@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Canvas & Cocktails Events</title>
 
   <style>
@@ -149,7 +149,7 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      z-index: 10;
+      z-index: 30;
       width: 29px;
       height: 29px;
       border-radius: 50%;
@@ -166,17 +166,18 @@
       box-shadow: inset 0 0 0 3px var(--pink);
     }
 
-    .event-link {
+    .event-card {
       position: absolute;
       inset: 0;
+      z-index: 1;
       display: flex;
       flex-direction: column;
-      text-decoration: none;
       background: #111111;
       color: #ffffff;
+      cursor: pointer;
     }
 
-    .event-link img {
+    .event-card img {
       width: 100%;
       height: 128px;
       display: block;
@@ -203,8 +204,28 @@
       color: #bdbdbd;
     }
 
+    .more-events-button {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      z-index: 40;
+      border: 0;
+      border-radius: 4px;
+      padding: 6px 8px;
+      background: linear-gradient(90deg, var(--purple), var(--pink));
+      color: #ffffff;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+
     .mobile-list {
       display: none;
+    }
+
+    .mobile-card {
+      cursor: pointer;
     }
 
     .no-events {
@@ -215,6 +236,204 @@
       color: #666666;
       background: #fafafa;
       font-size: 13px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.76);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .overview-modal {
+      width: 100%;
+      max-width: 560px;
+      max-height: 88vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+    }
+
+    .overview-image-wrap {
+      position: relative;
+      width: 100%;
+      background: #111111;
+    }
+
+    .overview-image {
+      width: 100%;
+      max-height: 420px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .overview-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.78);
+      color: #ffffff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .overview-content {
+      padding: 20px;
+    }
+
+    .overview-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.15;
+      color: #111111;
+    }
+
+    .overview-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-bottom: 15px;
+      color: #666666;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .overview-description {
+      margin: 0 0 18px;
+      color: #333333;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .overview-subtitle {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #111111;
+    }
+
+    .overview-includes {
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: #333333;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .overview-age {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 7px 10px;
+      border-radius: 5px;
+      background: #f1f1f1;
+      color: #333333;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .overview-ticket {
+      display: flex;
+      width: 100%;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+      background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--pink),
+        var(--teal)
+      );
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .day-events-modal {
+      width: 100%;
+      max-width: 520px;
+      max-height: 82vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      background: #ffffff;
+      padding: 18px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .day-events-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .day-events-top h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.2;
+      color: #111111;
+    }
+
+    .day-events-close {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: #111111;
+      color: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .day-event-item {
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr);
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid #dddddd;
+      cursor: pointer;
+    }
+
+    .day-event-item:first-child {
+      border-top: 0;
+    }
+
+    .day-event-item img {
+      width: 78px;
+      height: 94px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .day-event-item strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #111111;
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .day-event-item small {
+      color: #666666;
+      font-size: 11px;
     }
 
     @media (max-width: 700px) {
@@ -316,7 +535,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
         min-width: 0;
       }
 
@@ -328,34 +546,44 @@
       }
 
       .mobile-time {
-        margin-bottom: 9px;
+        margin-bottom: 7px;
         font-size: 11px;
         color: #666666;
       }
 
-      .mobile-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 30px;
-        padding: 0 12px;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #ffffff;
-        font-size: 8px;
+      .mobile-details {
+        font-size: 9px;
         font-weight: 800;
-        letter-spacing: 0.08em;
-        background: linear-gradient(
-          90deg,
-          var(--purple),
-          var(--pink)
-        );
+        letter-spacing: 0.06em;
+        color: var(--purple);
+      }
+
+      .modal-backdrop {
+        padding: 10px;
+        align-items: center;
+      }
+
+      .overview-modal {
+        max-height: 92vh;
+      }
+
+      .overview-image {
+        max-height: 330px;
+      }
+
+      .overview-content {
+        padding: 17px;
+      }
+
+      .overview-title {
+        font-size: 19px;
       }
     }
   </style>
 </head>
 
 <body>
+
   <div class="calendar-wrap">
 
     <div class="section-title">
@@ -365,15 +593,9 @@
     </div>
 
     <div class="month-nav">
-      <button id="prevMonth" type="button" aria-label="Previous month">
-        ‹
-      </button>
-
+      <button id="prevMonth" type="button" aria-label="Previous month">‹</button>
       <h2 id="monthTitle"></h2>
-
-      <button id="nextMonth" type="button" aria-label="Next month">
-        ›
-      </button>
+      <button id="nextMonth" type="button" aria-label="Next month">›</button>
     </div>
 
     <div class="desktop-calendar">
@@ -391,40 +613,160 @@
     </div>
 
     <div id="mobileList" class="mobile-list"></div>
+
+  </div>
+
+  <!-- EVENT OVERVIEW POPUP -->
+  <div id="overviewBackdrop" class="modal-backdrop">
+    <div class="overview-modal">
+
+      <div class="overview-image-wrap">
+        <img id="overviewImage" class="overview-image" src="" alt="">
+        <button id="overviewClose" class="overview-close" type="button">×</button>
+      </div>
+
+      <div class="overview-content">
+        <h2 id="overviewTitle" class="overview-title"></h2>
+
+        <div class="overview-meta">
+          <span id="overviewDate"></span>
+          <span id="overviewTime"></span>
+        </div>
+
+        <p id="overviewDescription" class="overview-description"></p>
+
+        <div id="overviewIncludesWrap">
+          <h3 class="overview-subtitle">WHAT'S INCLUDED</h3>
+          <ul id="overviewIncludes" class="overview-includes"></ul>
+        </div>
+
+        <div>
+          <span id="overviewAge" class="overview-age"></span>
+        </div>
+
+        <a
+          id="overviewTicket"
+          class="overview-ticket"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GET TICKETS
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MULTIPLE EVENTS ON SAME DAY POPUP -->
+  <div id="dayEventsBackdrop" class="modal-backdrop">
+    <div class="day-events-modal">
+
+      <div class="day-events-top">
+        <h3 id="dayEventsTitle"></h3>
+        <button
+          id="dayEventsClose"
+          class="day-events-close"
+          type="button"
+        >
+          ×
+        </button>
+      </div>
+
+      <div id="dayEventsList"></div>
+
+    </div>
   </div>
 
   <script>
     /*
-      ============================================
+      ==================================================
       EDIT YOUR EVENTS HERE
-      ============================================
+      ==================================================
 
-      Replace:
-      - date
-      - title
-      - time
-      - image
-      - link
+      You can add:
+      date
+      title
+      time
+      image
+      description
+      includes
+      age
+      link
 
-      Example date format:
-      2026-09-11
+      Multiple events can use the SAME date.
     */
 
     const events = [
+
       {
         date: "2026-09-11",
         title: "Friday Night Paint & Sip",
         time: "7:00 PM",
-        image: "https://placehold.co/600x800/202020/FFFFFF?text=EVENT+FLYER",
+        image: "https://placehold.co/600x800/202020/FFFFFF?text=FRIDAY+PAINT+%26+SIP",
+        description:
+          "Kick off your weekend with painting, cocktails, music, and good energy at Canvas & Cocktails.",
+        includes: [
+          "Guided painting experience",
+          "Canvas and painting supplies",
+          "Music throughout the event",
+          "Full bar available"
+        ],
+        age: "21+ Event",
         link: "https://www.eventbrite.com/"
       },
+
       {
         date: "2026-09-18",
         title: "R&B Paint & Sip",
+        time: "6:00 PM",
+        image: "https://placehold.co/600x800/7447A8/FFFFFF?text=R%26B+PAINT+%26+SIP",
+        description:
+          "Paint, sip, and vibe to R&B favorites while creating your own piece at Canvas & Cocktails.",
+        includes: [
+          "Guided painting experience",
+          "Canvas and painting supplies",
+          "R&B music",
+          "Full bar available"
+        ],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      },
+
+      {
+        date: "2026-09-18",
+        title: "Comedy Paint & Sip",
         time: "8:00 PM",
-        image: "https://placehold.co/600x800/202020/FFFFFF?text=EVENT+FLYER",
+        image: "https://placehold.co/600x800/D84C9A/FFFFFF?text=COMEDY+PAINT+%26+SIP",
+        description:
+          "A paint and sip experience mixed with comedy, cocktails, and a fun night out with your crew.",
+        includes: [
+          "Painting experience",
+          "Canvas and painting supplies",
+          "Comedy entertainment",
+          "Full bar available"
+        ],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      },
+
+      {
+        date: "2026-09-18",
+        title: "Late Night Open Paint",
+        time: "10:00 PM",
+        image: "https://placehold.co/600x800/16ACC7/FFFFFF?text=LATE+NIGHT+OPEN+PAINT",
+        description:
+          "Come through for a relaxed late-night painting session with music, drinks, and room to create at your own pace.",
+        includes: [
+          "Canvas and painting supplies",
+          "Open painting session",
+          "Music",
+          "Full bar available"
+        ],
+        age: "21+ Event",
         link: "https://www.eventbrite.com/"
       }
+
     ];
 
     const monthNames = [
@@ -458,6 +800,23 @@
     const prevMonth = document.getElementById("prevMonth");
     const nextMonth = document.getElementById("nextMonth");
 
+    const overviewBackdrop = document.getElementById("overviewBackdrop");
+    const overviewClose = document.getElementById("overviewClose");
+    const overviewImage = document.getElementById("overviewImage");
+    const overviewTitle = document.getElementById("overviewTitle");
+    const overviewDate = document.getElementById("overviewDate");
+    const overviewTime = document.getElementById("overviewTime");
+    const overviewDescription = document.getElementById("overviewDescription");
+    const overviewIncludes = document.getElementById("overviewIncludes");
+    const overviewIncludesWrap = document.getElementById("overviewIncludesWrap");
+    const overviewAge = document.getElementById("overviewAge");
+    const overviewTicket = document.getElementById("overviewTicket");
+
+    const dayEventsBackdrop = document.getElementById("dayEventsBackdrop");
+    const dayEventsClose = document.getElementById("dayEventsClose");
+    const dayEventsTitle = document.getElementById("dayEventsTitle");
+    const dayEventsList = document.getElementById("dayEventsList");
+
     const today = new Date();
 
     let displayYear = today.getFullYear();
@@ -471,13 +830,147 @@
       return `${year}-${pad(month + 1)}-${pad(day)}`;
     }
 
+    function formatEventDate(dateString) {
+      const parts = dateString.split("-").map(Number);
+
+      const date = new Date(
+        parts[0],
+        parts[1] - 1,
+        parts[2]
+      );
+
+      return date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+      });
+    }
+
     function getEventsForDate(year, month, day) {
       const key = makeDateKey(year, month, day);
 
-      return events.filter(event => event.date === key);
+      return events
+        .filter(event => event.date === key)
+        .sort((a, b) => a.time.localeCompare(b.time));
     }
 
+    function openOverview(event) {
+
+      overviewImage.src = event.image;
+      overviewImage.alt = event.title;
+
+      overviewTitle.textContent = event.title;
+      overviewDate.textContent = formatEventDate(event.date);
+      overviewTime.textContent = event.time;
+      overviewDescription.textContent = event.description || "";
+
+      overviewIncludes.innerHTML = "";
+
+      if (event.includes && event.includes.length > 0) {
+        overviewIncludesWrap.style.display = "block";
+
+        event.includes.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          overviewIncludes.appendChild(li);
+        });
+      } else {
+        overviewIncludesWrap.style.display = "none";
+      }
+
+      if (event.age) {
+        overviewAge.style.display = "inline-block";
+        overviewAge.textContent = event.age;
+      } else {
+        overviewAge.style.display = "none";
+      }
+
+      overviewTicket.href = event.link;
+
+      overviewBackdrop.classList.add("open");
+    }
+
+    function closeOverview() {
+      overviewBackdrop.classList.remove("open");
+    }
+
+    function openDayEvents(year, month, day, dayEvents) {
+
+      const date = new Date(year, month, day);
+
+      dayEventsTitle.textContent =
+        date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        });
+
+      dayEventsList.innerHTML = "";
+
+      dayEvents.forEach(event => {
+
+        const item = document.createElement("div");
+        item.className = "day-event-item";
+
+        const image = document.createElement("img");
+        image.src = event.image;
+        image.alt = event.title;
+
+        const info = document.createElement("div");
+
+        const title = document.createElement("strong");
+        title.textContent = event.title;
+
+        const time = document.createElement("small");
+        time.textContent = event.time;
+
+        info.appendChild(title);
+        info.appendChild(time);
+
+        item.appendChild(image);
+        item.appendChild(info);
+
+        item.addEventListener("click", () => {
+          dayEventsBackdrop.classList.remove("open");
+          openOverview(event);
+        });
+
+        dayEventsList.appendChild(item);
+      });
+
+      dayEventsBackdrop.classList.add("open");
+    }
+
+    function closeDayEvents() {
+      dayEventsBackdrop.classList.remove("open");
+    }
+
+    overviewClose.addEventListener("click", closeOverview);
+
+    overviewBackdrop.addEventListener("click", event => {
+      if (event.target === overviewBackdrop) {
+        closeOverview();
+      }
+    });
+
+    dayEventsClose.addEventListener("click", closeDayEvents);
+
+    dayEventsBackdrop.addEventListener("click", event => {
+      if (event.target === dayEventsBackdrop) {
+        closeDayEvents();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeOverview();
+        closeDayEvents();
+      }
+    });
+
     function renderDesktopCalendar() {
+
       calendarGrid.innerHTML = "";
 
       const firstWeekday =
@@ -491,7 +984,12 @@
       const totalCells =
         totalUsedCells <= 35 ? 35 : 42;
 
-      for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
+      for (
+        let cellIndex = 0;
+        cellIndex < totalCells;
+        cellIndex++
+      ) {
+
         const cell = document.createElement("div");
         cell.className = "day-cell";
 
@@ -518,16 +1016,18 @@
         }
 
         const dayEvents =
-          getEventsForDate(displayYear, displayMonth, day);
+          getEventsForDate(
+            displayYear,
+            displayMonth,
+            day
+          );
 
         if (dayEvents.length > 0) {
+
           const event = dayEvents[0];
 
-          const link = document.createElement("a");
-          link.className = "event-link";
-          link.href = event.link;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
+          const card = document.createElement("div");
+          card.className = "event-card";
 
           const image = document.createElement("img");
           image.src = event.image;
@@ -536,19 +1036,58 @@
           const copy = document.createElement("div");
           copy.className = "event-copy";
 
-          const title = document.createElement("strong");
-          title.textContent = event.title;
+          const eventTitle =
+            document.createElement("strong");
 
-          const time = document.createElement("small");
-          time.textContent = event.time;
+          eventTitle.textContent = event.title;
 
-          copy.appendChild(title);
-          copy.appendChild(time);
+          const eventTime =
+            document.createElement("small");
 
-          link.appendChild(image);
-          link.appendChild(copy);
+          eventTime.textContent = event.time;
 
-          cell.appendChild(link);
+          copy.appendChild(eventTitle);
+          copy.appendChild(eventTime);
+
+          card.appendChild(image);
+          card.appendChild(copy);
+
+          card.addEventListener("click", () => {
+            openOverview(event);
+          });
+
+          cell.appendChild(card);
+
+          if (dayEvents.length > 1) {
+
+            const moreButton =
+              document.createElement("button");
+
+            moreButton.className =
+              "more-events-button";
+
+            moreButton.type = "button";
+
+            moreButton.textContent =
+              `+${dayEvents.length - 1} MORE`;
+
+            moreButton.addEventListener(
+              "click",
+              eventClick => {
+                eventClick.preventDefault();
+                eventClick.stopPropagation();
+
+                openDayEvents(
+                  displayYear,
+                  displayMonth,
+                  day,
+                  dayEvents
+                );
+              }
+            );
+
+            cell.appendChild(moreButton);
+          }
         }
 
         calendarGrid.appendChild(cell);
@@ -556,93 +1095,146 @@
     }
 
     function renderMobileList() {
+
       mobileList.innerHTML = "";
 
       const monthEvents = events
         .filter(event => {
-          const [year, month] = event.date
-            .split("-")
-            .map(Number);
+
+          const parts =
+            event.date
+              .split("-")
+              .map(Number);
+
+          const year = parts[0];
+          const month = parts[1];
 
           return (
             year === displayYear &&
             month - 1 === displayMonth
           );
+
         })
-        .sort((a, b) => a.date.localeCompare(b.date));
+        .sort((a, b) => {
+
+          if (a.date !== b.date) {
+            return a.date.localeCompare(b.date);
+          }
+
+          return a.time.localeCompare(b.time);
+
+        });
 
       if (monthEvents.length === 0) {
-        const emptyMessage = document.createElement("div");
+
+        const emptyMessage =
+          document.createElement("div");
+
         emptyMessage.className = "no-events";
+
         emptyMessage.textContent =
           "No events scheduled for this month.";
 
         mobileList.appendChild(emptyMessage);
+
         return;
       }
 
       monthEvents.forEach(event => {
-        const [year, month, day] = event.date
-          .split("-")
-          .map(Number);
+
+        const parts =
+          event.date
+            .split("-")
+            .map(Number);
+
+        const year = parts[0];
+        const month = parts[1];
+        const day = parts[2];
 
         const eventDate =
-          new Date(year, month - 1, day);
+          new Date(
+            year,
+            month - 1,
+            day
+          );
 
-        const card = document.createElement("div");
+        const card =
+          document.createElement("div");
+
         card.className = "mobile-card";
 
-        const dateBlock = document.createElement("div");
+        const dateBlock =
+          document.createElement("div");
+
         dateBlock.className = "mobile-date";
 
-        const weekday = document.createElement("span");
-        weekday.textContent =
-          weekdayNames[eventDate.getDay()];
+        const weekday =
+          document.createElement("span");
 
-        const dayNumber = document.createElement("strong");
+        weekday.textContent =
+          weekdayNames[
+            eventDate.getDay()
+          ];
+
+        const dayNumber =
+          document.createElement("strong");
+
         dayNumber.textContent = day;
 
         dateBlock.appendChild(weekday);
         dateBlock.appendChild(dayNumber);
 
-        const info = document.createElement("div");
+        const info =
+          document.createElement("div");
+
         info.className = "mobile-info";
 
-        const title = document.createElement("div");
+        const title =
+          document.createElement("div");
+
         title.className = "mobile-title";
         title.textContent = event.title;
 
-        const time = document.createElement("div");
+        const time =
+          document.createElement("div");
+
         time.className = "mobile-time";
         time.textContent = event.time;
 
-        const button = document.createElement("a");
-        button.className = "mobile-button";
-        button.href = event.link;
-        button.target = "_blank";
-        button.rel = "noopener noreferrer";
-        button.textContent = "VIEW EVENT ›";
+        const details =
+          document.createElement("div");
+
+        details.className = "mobile-details";
+        details.textContent = "VIEW DETAILS ›";
 
         info.appendChild(title);
         info.appendChild(time);
-        info.appendChild(button);
+        info.appendChild(details);
 
         card.appendChild(dateBlock);
         card.appendChild(info);
 
+        card.addEventListener("click", () => {
+          openOverview(event);
+        });
+
         mobileList.appendChild(card);
+
       });
     }
 
     function renderCalendar() {
+
       monthTitle.textContent =
         `${monthNames[displayMonth]} ${displayYear}`;
 
       renderDesktopCalendar();
       renderMobileList();
+
     }
 
     prevMonth.addEventListener("click", () => {
+
       displayMonth--;
 
       if (displayMonth < 0) {
@@ -654,6 +1246,7 @@
     });
 
     nextMonth.addEventListener("click", () => {
+
       displayMonth++;
 
       if (displayMonth > 11) {
@@ -665,6 +1258,8 @@
     });
 
     renderCalendar();
+
   </script>
+
 </body>
 </html>
