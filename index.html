@@ -1,1 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Canvas & Cocktails Events</title>
 
+  <style>
+    :root {
+      --purple: #7447a8;
+      --pink: #d84c9a;
+      --teal: #16acc7;
+      --black: #111111;
+      --dark: #171717;
+      --line: #dddddd;
+      --text: #161616;
+      --muted: #6f6f6f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      padding: 22px 18px 40px;
+    }
+
+    .calendar-wrap {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .section-title .line {
+      height: 2px;
+      flex: 1;
+      background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--pink),
+        var(--teal)
+      );
+    }
+
+    .section-title h1 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      white-space: nowrap;
+    }
+
+    .month-nav {
+      display: grid;
+      grid-template-columns: 50px 1fr 50px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .month-nav button {
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #prevMonth {
+      background: var(--black);
+    }
+
+    #nextMonth {
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+    }
+
+    .month-nav h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .weekday-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      background: var(--dark);
+      border-left: 1px solid #343434;
+      border-top: 1px solid #343434;
+    }
+
+    .weekday-row div {
+      padding: 12px 4px;
+      text-align: center;
+      color: #dddddd;
+      font-size: 11px;
+      font-weight: 800;
+      border-right: 1px solid #343434;
+      border-bottom: 1px solid #343434;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      border-left: 1px solid #3a3a3a;
+    }
+
+    .day-cell {
+      position: relative;
+      min-width: 0;
+      height: 180px;
+      overflow: hidden;
+      background: #0c0c0c;
+      border-right: 1px solid #3a3a3a;
+      border-bottom: 1px solid #3a3a3a;
+    }
+
+    .day-cell.empty {
+      background: #181818;
+    }
+
+    .day-number {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 10;
+      width: 29px;
+      height: 29px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      color: #111111;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .day-cell.today {
+      box-shadow: inset 0 0 0 3px var(--pink);
+    }
+
+    .event-link {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      background: #111111;
+      color: #ffffff;
+    }
+
+    .event-link img {
+      width: 100%;
+      height: 128px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .event-copy {
+      padding: 8px 9px;
+      background: #111111;
+      min-height: 52px;
+    }
+
+    .event-copy strong {
+      display: block;
+      font-size: 11px;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+
+    .event-copy small {
+      display: block;
+      margin-top: 4px;
+      font-size: 10px;
+      color: #bdbdbd;
+    }
+
+    .mobile-list {
+      display: none;
+    }
+
+    .no-events {
+      padding: 24px 16px;
+      border: 1px solid #dddddd;
+      border-radius: 10px;
+      text-align: center;
+      color: #666666;
+      background: #fafafa;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 14px 12px 28px;
+      }
+
+      .section-title {
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+
+      .section-title h1 {
+        font-size: 12px;
+        letter-spacing: 0.1em;
+      }
+
+      .month-nav {
+        grid-template-columns: 42px 1fr 42px;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .month-nav button {
+        width: 40px;
+        height: 40px;
+        font-size: 27px;
+      }
+
+      .month-nav h2 {
+        font-size: 17px;
+      }
+
+      .desktop-calendar {
+        display: none;
+      }
+
+      .mobile-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .mobile-card {
+        display: grid;
+        grid-template-columns: 74px minmax(0, 1fr);
+        min-height: 104px;
+        overflow: hidden;
+        border: 1px solid #dddddd;
+        border-radius: 11px;
+        background:
+          radial-gradient(
+            circle at 94% 10%,
+            rgba(216, 76, 154, 0.16),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 82% 110%,
+            rgba(22, 172, 199, 0.14),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 35% -20%,
+            rgba(116, 71, 168, 0.09),
+            transparent 35%
+          ),
+          #ffffff;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      }
+
+      .mobile-date {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        background: linear-gradient(
+          155deg,
+          var(--purple),
+          var(--pink) 60%,
+          var(--teal) 130%
+        );
+      }
+
+      .mobile-date span {
+        margin-bottom: 5px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+      }
+
+      .mobile-date strong {
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .mobile-info {
+        padding: 12px 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        min-width: 0;
+      }
+
+      .mobile-title {
+        margin-bottom: 4px;
+        font-size: 13px;
+        line-height: 1.25;
+        font-weight: 800;
+      }
+
+      .mobile-time {
+        margin-bottom: 9px;
+        font-size: 11px;
+        color: #666666;
+      }
+
+      .mobile-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 0 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        background: linear-gradient(
+          90deg,
+          var(--purple),
+          var(--pink)
+        );
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calendar-wrap">
+
+    <div class="section-title">
+      <div class="line"></div>
+      <h1>UPCOMING EVENTS</h1>
+      <div class="line"></div>
+    </div>
+
+    <div class="month-nav">
+      <button id="prevMonth" type="button" aria-label="Previous month">
+        ‹
+      </button>
+
+      <h2 id="monthTitle"></h2>
+
+      <button id="nextMonth" type="button" aria-label="Next month">
+        ›
+      </button>
+    </div>
+
+    <div class="desktop-calendar">
+      <div class="weekday-row">
+        <div>SUN</div>
+        <div>MON</div>
+        <div>TUE</div>
+        <div>WED</div>
+        <div>THU</div>
+        <div>FRI</div>
+        <div>SAT</div>
+      </div>
+
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+
+    <div id="mobileList" class="mobile-list"></div>
+  </div>
+
+  <script>
+    /*
+      ============================================
+      EDIT YOUR EVENTS HERE
+      ============================================
+
+      Replace:
+      - date
+      - title
+      - time
+      - image
+      - link
+
+      Example date format:
+      2026-09-11
+    */
+
+    const events = [
+      {
+        date: "2026-09-11",
+        title: "Friday Night Paint & Sip",
+        time: "7:00 PM",
+        image: "https://placehold.co/600x800/202020/FFFFFF?text=EVENT+FLYER",
+        link: "https://www.eventbrite.com/"
+      },
+      {
+        date: "2026-09-18",
+        title: "R&B Paint & Sip",
+        time: "8:00 PM",
+        image: "https://placehold.co/600x800/202020/FFFFFF?text=EVENT+FLYER",
+        link: "https://www.eventbrite.com/"
+      }
+    ];
+
+    const monthNames = [
+      "JANUARY",
+      "FEBRUARY",
+      "MARCH",
+      "APRIL",
+      "MAY",
+      "JUNE",
+      "JULY",
+      "AUGUST",
+      "SEPTEMBER",
+      "OCTOBER",
+      "NOVEMBER",
+      "DECEMBER"
+    ];
+
+    const weekdayNames = [
+      "SUN",
+      "MON",
+      "TUE",
+      "WED",
+      "THU",
+      "FRI",
+      "SAT"
+    ];
+
+    const calendarGrid = document.getElementById("calendarGrid");
+    const mobileList = document.getElementById("mobileList");
+    const monthTitle = document.getElementById("monthTitle");
+    const prevMonth = document.getElementById("prevMonth");
+    const nextMonth = document.getElementById("nextMonth");
+
+    const today = new Date();
+
+    let displayYear = today.getFullYear();
+    let displayMonth = today.getMonth();
+
+    function pad(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function makeDateKey(year, month, day) {
+      return `${year}-${pad(month + 1)}-${pad(day)}`;
+    }
+
+    function getEventsForDate(year, month, day) {
+      const key = makeDateKey(year, month, day);
+
+      return events.filter(event => event.date === key);
+    }
+
+    function renderDesktopCalendar() {
+      calendarGrid.innerHTML = "";
+
+      const firstWeekday =
+        new Date(displayYear, displayMonth, 1).getDay();
+
+      const daysInMonth =
+        new Date(displayYear, displayMonth + 1, 0).getDate();
+
+      const totalUsedCells = firstWeekday + daysInMonth;
+
+      const totalCells =
+        totalUsedCells <= 35 ? 35 : 42;
+
+      for (let cellIndex = 0; cellIndex < totalCells; cellIndex++) {
+        const cell = document.createElement("div");
+        cell.className = "day-cell";
+
+        const day = cellIndex - firstWeekday + 1;
+
+        if (day < 1 || day > daysInMonth) {
+          cell.classList.add("empty");
+          calendarGrid.appendChild(cell);
+          continue;
+        }
+
+        const number = document.createElement("div");
+        number.className = "day-number";
+        number.textContent = day;
+
+        cell.appendChild(number);
+
+        if (
+          displayYear === today.getFullYear() &&
+          displayMonth === today.getMonth() &&
+          day === today.getDate()
+        ) {
+          cell.classList.add("today");
+        }
+
+        const dayEvents =
+          getEventsForDate(displayYear, displayMonth, day);
+
+        if (dayEvents.length > 0) {
+          const event = dayEvents[0];
+
+          const link = document.createElement("a");
+          link.className = "event-link";
+          link.href = event.link;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+
+          const image = document.createElement("img");
+          image.src = event.image;
+          image.alt = event.title;
+
+          const copy = document.createElement("div");
+          copy.className = "event-copy";
+
+          const title = document.createElement("strong");
+          title.textContent = event.title;
+
+          const time = document.createElement("small");
+          time.textContent = event.time;
+
+          copy.appendChild(title);
+          copy.appendChild(time);
+
+          link.appendChild(image);
+          link.appendChild(copy);
+
+          cell.appendChild(link);
+        }
+
+        calendarGrid.appendChild(cell);
+      }
+    }
+
+    function renderMobileList() {
+      mobileList.innerHTML = "";
+
+      const monthEvents = events
+        .filter(event => {
+          const [year, month] = event.date
+            .split("-")
+            .map(Number);
+
+          return (
+            year === displayYear &&
+            month - 1 === displayMonth
+          );
+        })
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      if (monthEvents.length === 0) {
+        const emptyMessage = document.createElement("div");
+        emptyMessage.className = "no-events";
+        emptyMessage.textContent =
+          "No events scheduled for this month.";
+
+        mobileList.appendChild(emptyMessage);
+        return;
+      }
+
+      monthEvents.forEach(event => {
+        const [year, month, day] = event.date
+          .split("-")
+          .map(Number);
+
+        const eventDate =
+          new Date(year, month - 1, day);
+
+        const card = document.createElement("div");
+        card.className = "mobile-card";
+
+        const dateBlock = document.createElement("div");
+        dateBlock.className = "mobile-date";
+
+        const weekday = document.createElement("span");
+        weekday.textContent =
+          weekdayNames[eventDate.getDay()];
+
+        const dayNumber = document.createElement("strong");
+        dayNumber.textContent = day;
+
+        dateBlock.appendChild(weekday);
+        dateBlock.appendChild(dayNumber);
+
+        const info = document.createElement("div");
+        info.className = "mobile-info";
+
+        const title = document.createElement("div");
+        title.className = "mobile-title";
+        title.textContent = event.title;
+
+        const time = document.createElement("div");
+        time.className = "mobile-time";
+        time.textContent = event.time;
+
+        const button = document.createElement("a");
+        button.className = "mobile-button";
+        button.href = event.link;
+        button.target = "_blank";
+        button.rel = "noopener noreferrer";
+        button.textContent = "VIEW EVENT ›";
+
+        info.appendChild(title);
+        info.appendChild(time);
+        info.appendChild(button);
+
+        card.appendChild(dateBlock);
+        card.appendChild(info);
+
+        mobileList.appendChild(card);
+      });
+    }
+
+    function renderCalendar() {
+      monthTitle.textContent =
+        `${monthNames[displayMonth]} ${displayYear}`;
+
+      renderDesktopCalendar();
+      renderMobileList();
+    }
+
+    prevMonth.addEventListener("click", () => {
+      displayMonth--;
+
+      if (displayMonth < 0) {
+        displayMonth = 11;
+        displayYear--;
+      }
+
+      renderCalendar();
+    });
+
+    nextMonth.addEventListener("click", () => {
+      displayMonth++;
+
+      if (displayMonth > 11) {
+        displayMonth = 0;
+        displayYear++;
+      }
+
+      renderCalendar();
+    });
+
+    renderCalendar();
+  </script>
+</body>
+</html>
