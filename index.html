@@ -13,9 +13,7 @@
       --teal: #16acc7;
       --black: #111111;
       --dark: #171717;
-      --line: #dddddd;
       --text: #161616;
-      --muted: #6f6f6f;
     }
 
     * {
@@ -76,7 +74,7 @@
       margin-bottom: 16px;
     }
 
-    .month-nav button {
+    .month-arrow {
       width: 46px;
       height: 46px;
       border: none;
@@ -92,21 +90,21 @@
 
       background: linear-gradient(
         135deg,
-        var(--purple) 0%,
-        var(--pink) 55%,
-        var(--teal) 100%
+        #7447a8 0%,
+        #d84c9a 55%,
+        #16acc7 100%
       );
 
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
       transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .month-nav button:hover {
+    .month-arrow:hover {
       transform: translateY(-1px);
       opacity: 0.95;
     }
 
-    .month-nav button:active {
+    .month-arrow:active {
       transform: translateY(0);
     }
 
@@ -470,17 +468,10 @@
         margin-bottom: 18px;
       }
 
-      .month-nav button {
+      .month-arrow {
         width: 40px;
         height: 40px;
         font-size: 27px;
-
-        background: linear-gradient(
-          135deg,
-          var(--purple) 0%,
-          var(--pink) 55%,
-          var(--teal) 100%
-        );
       }
 
       .month-nav h2 {
@@ -613,9 +604,25 @@
     </div>
 
     <div class="month-nav">
-      <button id="prevMonth" type="button" aria-label="Previous month">‹</button>
+      <button
+        id="prevMonth"
+        class="month-arrow"
+        type="button"
+        aria-label="Previous month"
+      >
+        ‹
+      </button>
+
       <h2 id="monthTitle"></h2>
-      <button id="nextMonth" type="button" aria-label="Next month">›</button>
+
+      <button
+        id="nextMonth"
+        class="month-arrow"
+        type="button"
+        aria-label="Next month"
+      >
+        ›
+      </button>
     </div>
 
     <div class="desktop-calendar">
@@ -1117,7 +1124,6 @@
         dateBlock.className = "mobile-date";
 
         const weekday = document.createElement("span");
-
         weekday.textContent =
           weekdayNames[eventDate.getDay()];
 
