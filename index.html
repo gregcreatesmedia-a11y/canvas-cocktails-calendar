@@ -1004,6 +1004,8 @@
   </div>
 
 
+  <!-- Shared event information used by this calendar and the homepage preview. -->
+  <script src="events.js"></script>
   <script>
 
     /*
@@ -1015,7 +1017,7 @@
       ==============================================
     */
 
-    const events = [
+    window.canvasCocktailsEvents = window.canvasCocktailsEvents || [
 
       {
         date: "2026-09-11",
@@ -1117,6 +1119,9 @@
       }
 
     ];
+
+
+    const events = window.canvasCocktailsEvents;
 
 
     const monthNames = [
