@@ -1,1 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canvas &amp; Cocktails Upcoming Events</title>
 
+<!--
+  Canvas & Cocktails: four upcoming events for the home page.
+  Carrd: Add Element > Embed > Code > Inline, then paste this entire file.
+
+  MASTER EVENT LIST + four-card homepage preview in one embed.
+  Update events only in window.canvasCocktailsEvents near the bottom.
+  The full #events calendar reads this same list.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+<style>
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #fff;
+  }
+
+  .cc-featured-events,
+  .cc-featured-events * { box-sizing: border-box; }
+
+  .cc-featured-events {
+    --cc-blue: #16acc7;
+    --cc-pink: #d84c9a;
+    --cc-purple: #7447a8;
+    position: relative;
+    z-index: 4;
+    width: 100%;
+    margin: 0 auto;
+    padding: 26px 18px 30px;
+    color: #151515;
+    background: #fff;
+    font-family: "Montserrat", Arial, sans-serif;
+  }
+
+  .cc-featured-events__inner {
+    width: min(100%, 1180px);
+    margin: 0 auto;
+  }
+
+  .cc-featured-events__heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 20px);
+    width: 100%;
+    margin: 0 0 22px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .cc-featured-events__heading::before,
+  .cc-featured-events__heading::after {
+    content: "";
+    display: block;
+    width: min(14vw, 150px);
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--cc-purple), var(--cc-pink), var(--cc-blue));
+    flex: 1 1 150px;
+  }
+
+  .cc-featured-events__heading::after {
+    background: linear-gradient(90deg, var(--cc-blue), var(--cc-pink), var(--cc-purple));
+  }
+
+  .cc-featured-events__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .cc-event-card {
+    display: flex;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    color: #151515;
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    text-decoration: none;
+    flex-direction: column;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+
+  .cc-event-card:hover,
+  .cc-event-card:focus-visible {
+    border-color: var(--cc-blue);
+    box-shadow: 0 10px 25px rgba(4, 179, 217, .16);
+    outline: none;
+    transform: translateY(-3px);
+  }
+
+  .cc-event-card__image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: linear-gradient(135deg, #32105d, var(--cc-pink) 52%, var(--cc-blue));
+  }
+
+  .cc-event-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cc-event-card__date {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    min-width: 52px;
+    padding: 7px 8px;
+    color: #fff;
+    background: linear-gradient(145deg, var(--cc-purple), var(--cc-pink), var(--cc-blue));
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .cc-event-card__month {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    line-height: 1;
+  }
+
+  .cc-event-card__day {
+    display: block;
+    margin-top: 3px;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .cc-event-card__body {
+    display: flex;
+    min-height: 112px;
+    padding: 14px;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .cc-event-card__title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .cc-event-card__meta {
+    margin: 7px 0 0;
+    color: #656565;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .cc-event-card__link {
+    margin-top: auto;
+    padding-top: 11px;
+    color: var(--cc-blue);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .cc-featured-events__more-wrap {
+    margin-top: 22px;
+    text-align: center;
+  }
+
+  .cc-featured-events__more {
+    display: inline-flex;
+    padding: 4px 2px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--cc-blue);
+    background: transparent;
+    border: 0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    transition: color .18s ease;
+  }
+
+  .cc-featured-events__more::after {
+    content: "\2192";
+    display: inline-block;
+    font-size: 19px;
+    line-height: 1;
+    transition: transform .18s ease;
+  }
+
+  .cc-featured-events__more:hover,
+  .cc-featured-events__more:focus-visible {
+    color: var(--cc-purple);
+    outline: none;
+  }
+
+  .cc-featured-events__more:hover::after,
+  .cc-featured-events__more:focus-visible::after {
+    transform: translateX(4px);
+  }
+
+  .cc-featured-events__empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 30px 16px;
+    color: #666;
+    border: 1px solid #e7e7e7;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  @media (max-width: 850px) {
+    .cc-featured-events__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 600px) {
+    .cc-featured-events { padding: 20px 16px 24px; }
+    .cc-featured-events__heading {
+      gap: 9px;
+      margin-bottom: 16px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+    .cc-featured-events__heading::before,
+    .cc-featured-events__heading::after { min-width: 24px; height: 2px; }
+    .cc-featured-events__grid { gap: 10px; }
+    .cc-event-card__body { min-height: 108px; padding: 11px; }
+    .cc-event-card__title { font-size: 13px; }
+    .cc-event-card__meta { font-size: 11px; }
+    .cc-event-card__date { top: 7px; left: 7px; min-width: 45px; padding: 6px; }
+    .cc-event-card__day { font-size: 18px; }
+    .cc-featured-events__more { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="cc-featured-events" aria-labelledby="cc-featured-events-title">
+  <div class="cc-featured-events__inner">
+    <h2 class="cc-featured-events__heading" id="cc-featured-events-title">Upcoming Events</h2>
+    <div class="cc-featured-events__grid" id="cc-featured-events-grid">
+      <!-- These four initial cards reserve the correct Carrd embed height. -->
+      <a class="cc-event-card" href="https://www.eventbrite.com/">
+        <div class="cc-event-card__image-wrap">
+          <img class="cc-event-card__image" src="https://placehold.co/600x800/202020/FFFFFF?text=FRIDAY+PAINT+%26+SIP" alt="Friday Night Paint &amp; Sip event artwork" loading="lazy">
+          <span class="cc-event-card__date"><span class="cc-event-card__month">Sep</span><span class="cc-event-card__day">11</span></span>
+        </div>
+        <div class="cc-event-card__body"><h3 class="cc-event-card__title">Friday Night Paint &amp; Sip</h3><p class="cc-event-card__meta">7:00 PM</p><span class="cc-event-card__link">View Event</span></div>
+      </a>
+      <a class="cc-event-card" href="https://www.eventbrite.com/">
+        <div class="cc-event-card__image-wrap">
+          <img class="cc-event-card__image" src="https://placehold.co/600x800/7447A8/FFFFFF?text=R%26B+PAINT+%26+SIP" alt="R&amp;B Paint &amp; Sip event artwork" loading="lazy">
+          <span class="cc-event-card__date"><span class="cc-event-card__month">Sep</span><span class="cc-event-card__day">18</span></span>
+        </div>
+        <div class="cc-event-card__body"><h3 class="cc-event-card__title">R&amp;B Paint &amp; Sip</h3><p class="cc-event-card__meta">6:00 PM</p><span class="cc-event-card__link">View Event</span></div>
+      </a>
+      <a class="cc-event-card" href="https://www.eventbrite.com/">
+        <div class="cc-event-card__image-wrap">
+          <img class="cc-event-card__image" src="https://placehold.co/600x800/D84C9A/FFFFFF?text=COMEDY+PAINT+%26+SIP" alt="Comedy Paint &amp; Sip event artwork" loading="lazy">
+          <span class="cc-event-card__date"><span class="cc-event-card__month">Sep</span><span class="cc-event-card__day">18</span></span>
+        </div>
+        <div class="cc-event-card__body"><h3 class="cc-event-card__title">Comedy Paint &amp; Sip</h3><p class="cc-event-card__meta">8:00 PM</p><span class="cc-event-card__link">View Event</span></div>
+      </a>
+      <a class="cc-event-card" href="https://www.eventbrite.com/">
+        <div class="cc-event-card__image-wrap">
+          <img class="cc-event-card__image" src="https://placehold.co/600x800/16ACC7/FFFFFF?text=LATE+NIGHT+OPEN+PAINT" alt="Late Night Open Paint event artwork" loading="lazy">
+          <span class="cc-event-card__date"><span class="cc-event-card__month">Sep</span><span class="cc-event-card__day">18</span></span>
+        </div>
+        <div class="cc-event-card__body"><h3 class="cc-event-card__title">Late Night Open Paint</h3><p class="cc-event-card__meta">10:00 PM</p><span class="cc-event-card__link">View Event</span></div>
+      </a>
+    </div>
+    <div class="cc-featured-events__more-wrap">
+      <a class="cc-featured-events__more" href="https://menutest.carrd.co/#events" target="_top">See More Events</a>
+    </div>
+  </div>
+</section>
+
+<!-- Both this preview and index.html should load the same events.js file. -->
+<script src="events.js"></script>
+<script>
+  (() => {
+    /* MASTER EVENT LIST — edit these records to update both sections. */
+    window.canvasCocktailsEvents = window.canvasCocktailsEvents || [
+      {
+        date: "2026-09-11",
+        title: "Friday Night Paint & Sip",
+        time: "7:00 PM",
+        image: "https://placehold.co/600x800/202020/FFFFFF?text=FRIDAY+PAINT+%26+SIP",
+        description: "Kick off your weekend with painting, cocktails, music, and good energy at Canvas & Cocktails.",
+        includes: ["Guided painting experience", "Canvas and painting supplies", "Music throughout the event", "Full bar available"],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      },
+      {
+        date: "2026-09-18",
+        title: "R&B Paint & Sip",
+        time: "6:00 PM",
+        image: "https://placehold.co/600x800/7447A8/FFFFFF?text=R%26B+PAINT+%26+SIP",
+        description: "Paint, sip, and vibe to R&B favorites while creating your own piece at Canvas & Cocktails.",
+        includes: ["Guided painting experience", "Canvas and painting supplies", "R&B music", "Full bar available"],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      },
+      {
+        date: "2026-09-18",
+        title: "Comedy Paint & Sip",
+        time: "8:00 PM",
+        image: "https://placehold.co/600x800/D84C9A/FFFFFF?text=COMEDY+PAINT+%26+SIP",
+        description: "A paint and sip experience mixed with comedy, cocktails, and a fun night out with your crew.",
+        includes: ["Painting experience", "Canvas and painting supplies", "Comedy entertainment", "Full bar available"],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      },
+      {
+        date: "2026-09-18",
+        title: "Late Night Open Paint",
+        time: "10:00 PM",
+        image: "https://placehold.co/600x800/16ACC7/FFFFFF?text=LATE+NIGHT+OPEN+PAINT",
+        description: "Come through for a relaxed late-night painting session with music, drinks, and room to create at your own pace.",
+        includes: ["Canvas and painting supplies", "Open painting session", "Music", "Full bar available"],
+        age: "21+ Event",
+        link: "https://www.eventbrite.com/"
+      }
+    ];
+
+    const featuredEvents = Array.isArray(window.canvasCocktailsEvents)
+      ? window.canvasCocktailsEvents
+      : [];
+
+    const grid = document.getElementById("cc-featured-events-grid");
+    if (!grid) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = featuredEvents
+      .map((event) => ({ ...event, parsedDate: new Date(`${event.date}T12:00:00`) }))
+      .filter((event) => !Number.isNaN(event.parsedDate.getTime()) && event.parsedDate >= today)
+      .sort((a, b) => a.parsedDate - b.parsedDate)
+      .slice(0, 4);
+
+    if (!upcoming.length) {
+      grid.innerHTML = '<p class="cc-featured-events__empty">New events are coming soon.</p>';
+      return;
+    }
+
+    const escapeHTML = (value) => String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+    grid.innerHTML = upcoming.map((event) => {
+      const month = event.parsedDate.toLocaleDateString("en-US", { month: "short" });
+      const day = event.parsedDate.getDate();
+      const image = event.image
+        ? `<img class="cc-event-card__image" src="${escapeHTML(event.image)}" alt="${escapeHTML(event.title)} event artwork" loading="lazy">`
+        : "";
+      return `
+        <a class="cc-event-card" href="${escapeHTML(event.link || event.url || "#")}" target="_blank" rel="noopener noreferrer">
+          <div class="cc-event-card__image-wrap">
+            ${image}
+            <span class="cc-event-card__date">
+              <span class="cc-event-card__month">${escapeHTML(month)}</span>
+              <span class="cc-event-card__day">${day}</span>
+            </span>
+          </div>
+          <div class="cc-event-card__body">
+            <h3 class="cc-event-card__title">${escapeHTML(event.title)}</h3>
+            <p class="cc-event-card__meta">${escapeHTML(event.time)}</p>
+            <span class="cc-event-card__link">View Event</span>
+          </div>
+        </a>`;
+    }).join("");
+
+    /* Ask Carrd to recalculate the Inline Embed after the dynamic cards render. */
+    requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
+    setTimeout(() => window.dispatchEvent(new Event("resize")), 150);
+  })();
+</script>
+</body>
+</html>
