@@ -404,5 +404,27 @@
     setTimeout(() => window.dispatchEvent(new Event("resize")), 150);
   })();
 </script>
+<script>
+  (() => {
+    const reportHeight = () => {
+      const height = Math.ceil(document.documentElement.scrollHeight);
+      window.parent.postMessage({ type: "cc-upcoming-height", height }, "*");
+    };
+
+    window.addEventListener("load", reportHeight);
+    window.addEventListener("resize", reportHeight);
+
+    document.querySelectorAll("img").forEach((image) => {
+      if (!image.complete) image.addEventListener("load", reportHeight, { once: true });
+    });
+
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(reportHeight).observe(document.body);
+    }
+
+    requestAnimationFrame(reportHeight);
+    setTimeout(reportHeight, 250);
+  })();
+</script>
 </body>
 </html>
