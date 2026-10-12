@@ -29,6 +29,22 @@ window.canvasCocktailsEvents = [
     age: "13+ with Adult",
     link: "https://www.eventbrite.com/e/witches-brew-paint-and-sip-tickets-2003269938312?aff=oddtdtcreator"
   },
+  
+{
+  date: "2026-10-25",
+  title: "BoOo! Paint and Sip",
+  time: "3:00 PM",
+  image: "https://raw.githubusercontent.com/gregcreatesmedia-a11y/canvas-cocktails-calendar/main/images/BoOo!.JPG",
+  description: "A playful ghost rises from a glowing pumpkin on Halloween night.",
+  includes: [
+    "🎨 All painting supplies",
+    "📸 Photographer on-site",
+    "🎟️ Entry to surprise raffle"
+  ],
+  age: "13+ with Adult",
+  link: "https://www.eventbrite.com/e/2003269932294?aff=oddtdtcreator"
+},
+
   {
     date: "2026-10-25",
     title: "Monster Mood Paint and Sip",
