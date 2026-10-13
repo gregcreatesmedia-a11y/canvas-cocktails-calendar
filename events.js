@@ -78,6 +78,10 @@ window.canvasCocktailsEvents = [
   }
 ].map(event => ({
   ...event,
+  venueName: "Canvas & Cocktails",
+  venueAddress: "2804 Crums Lane, Louisville, KY 40216",
+  directionsURL: "https://www.google.com/maps/search/?api=1&query=2804+Crums+Lane%2C+Louisville%2C+KY+40216",
+  arrivalNote: "Please arrive 15 minutes early.",
   // Copied from each Eventbrite overview, verified October 12, 2026.
   attendanceNotes: "Guests ages 13 and up are welcome. Anyone under 18 must be accompanied by an adult. Guests purchasing or consuming alcohol must be 21 or older and present a valid photo ID."
 }));
@@ -114,7 +118,7 @@ window.canvasCocktailsEvents = [
   const source = document.currentScript;
   if (!source || !source.src) return;
   const script = document.createElement('script');
-  script.src = new URL('checkout.js?v=20261013-prices', source.src).href;
+  script.src = new URL('checkout.js?v=20261013-visit', source.src).href;
   script.dataset.ccCheckout = '';
   document.head.appendChild(script);
 })();
