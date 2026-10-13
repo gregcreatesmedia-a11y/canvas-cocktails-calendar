@@ -120,6 +120,8 @@
         background:#111; color:white; font:26px Arial,sans-serif; cursor:pointer; }
       #cc-checkout .cc-checkout-help { padding:0 20px 16px; }
       #cc-checkout p { margin:0 0 8px; }
+      #cc-checkout [data-event-session] { margin:6px 0 0; font-size:13px; font-weight:600; }
+      #cc-checkout .cc-price { color:#63388f; font-weight:700; }
       #cc-checkout a { color:#63388f; text-decoration:underline; display:inline-block; padding:8px 0; }
       #cc-checkout [hidden] { display:none !important; }
       #cc-checkout iframe { width:100%; border:0; }
@@ -143,7 +145,7 @@
     dialog = document.createElement('dialog');
     dialog.id = 'cc-checkout';
     dialog.setAttribute('aria-labelledby', 'cc-checkout-title');
-    dialog.innerHTML = `<div class="cc-checkout-header"><h2 id="cc-checkout-title"></h2>
+    dialog.innerHTML = `<div class="cc-checkout-header"><div><h2 id="cc-checkout-title"></h2><p data-event-session></p></div>
       <button type="button" aria-label="Close checkout" autofocus>×</button></div>
       <div class="cc-checkout-help"><p role="status" aria-live="polite"></p>
       <a class="cc-faq-link" data-cc-faq data-success-faq href="${faqURL}" target="_top" hidden>Before you arrive: View FAQs</a>
@@ -178,16 +180,20 @@
     selected = null;
     stopLoadingTimer();
     dialog.querySelector("button").setAttribute("aria-label", "Close painting preview");
-    title.textContent = `${event.title} — ${event.date}, ${event.time}`;
+    title.textContent = event.title;
+    const date = new Date(`${event.date}T12:00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    dialog.querySelector('[data-event-session]').textContent = `${date} • ${event.timeRange || event.time}`;
     if (!paintingPreview) {
       paintingPreview = document.createElement('div');
       paintingPreview.className = 'cc-painting-preview';
-      paintingPreview.innerHTML = '<img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a class="cc-faq-link" data-cc-faq target="_top">Questions? View FAQs</a><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
+      paintingPreview.innerHTML = '<p class="cc-price" data-price></p><img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><p class="cc-bar-details">🍸 Full service bar with a bartender. <strong>Drinks sold separately.</strong></p><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a class="cc-faq-link" data-cc-faq target="_top">Questions? View FAQs</a><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
       dialog.appendChild(paintingPreview);
     }
+    paintingPreview.querySelector('[data-price]').textContent = event.priceLabel || '';
+    paintingPreview.querySelector('[data-price]').hidden = !event.priceLabel;
     paintingPreview.querySelector('img').src = event.image;
     paintingPreview.querySelector('img').alt = `${event.title} finished painting`;
-    paintingPreview.querySelector('p').textContent = event.description || '';
+    paintingPreview.querySelector('h3 + p').textContent = event.description || '';
     const includes = Array.isArray(event.includes) ? event.includes : [];
     const list = paintingPreview.querySelector('ul');
     list.replaceChildren();
@@ -224,7 +230,9 @@
     slots.hidden = false;
     dialog.querySelector('.cc-checkout-help').hidden = false;
     selected = id;
-    title.textContent = `${event.title} — ${event.date}, ${event.time}`;
+    title.textContent = event.title;
+    const date = new Date(`${event.date}T12:00:00`).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    dialog.querySelector('[data-event-session]').textContent = `${date} • ${event.timeRange || event.time}`;
     direct.href = event.link;
     const url = new URL('index.html', assetBase);
     url.searchParams.set('checkout', id);
