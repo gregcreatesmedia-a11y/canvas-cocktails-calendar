@@ -57,7 +57,51 @@
     }
   }
 
+  const faqURL = 'https://canvasandcocktailslou.com/?view=faq';
   let dialog, title, status, fullPage, direct, slots, selected, previousOverflow;
+  let help, successLink, loadingTimer;
+  function stopLoadingTimer() { clearTimeout(loadingTimer); }
+  function renderCheckout(widget) {
+    stopLoadingTimer();
+    const complete = widget.completed;
+    status.classList.toggle('cc-loading', !complete && !widget.loaded && !widget.failed);
+    status.textContent = complete
+      ? 'You’re booked! 🎨🥂 Thanks for choosing Canvas & Cocktails. Check your email for your tickets—we can’t wait to paint with you!'
+      : widget.failed ? 'Your tickets could not load. Please use one of the checkout links below.'
+      : widget.loaded ? 'Secure checkout by Eventbrite.'
+      : 'Loading your tickets… This may take a few seconds.';
+    successLink.hidden = !complete;
+    help.hidden = !!complete;
+    help.open = !!widget.failed;
+    help.querySelector('summary').textContent = widget.failed ? 'Open checkout another way' : 'Need help?';
+    if (!complete && !widget.loaded && !widget.failed) {
+      loadingTimer = setTimeout(() => {
+        if (!dialog.open || slots.hidden || widgets.get(selected) !== widget) return;
+        status.classList.remove('cc-loading');
+        status.textContent = 'Still loading? Open checkout in a new tab.';
+        help.open = true;
+      }, 12000);
+    }
+  }
+
+  // Carrd uses URL hashes for sections. Use a query flag for external FAQ links
+  // so its section router can open Home normally before we scroll to the FAQ.
+  function revealFAQ() {
+    if (dialog?.open) dialog.close();
+    document.querySelector('#overviewBackdrop')?.classList.remove('open');
+    if (location.hash && location.hash !== '#home') location.hash = 'home';
+    const deadline = Date.now() + 5000;
+    function scrollWhenVisible() {
+      const faq = document.getElementById('cc-faq');
+      if (faq && faq.getClientRects().length && getComputedStyle(faq).visibility !== 'hidden') {
+        faq.scrollIntoView({ block: 'start', behavior: 'auto' });
+        const heading = faq.querySelector('h2');
+        if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+      } else if (Date.now() < deadline) requestAnimationFrame(scrollWhenVisible);
+    }
+    // Allow native dialog close and Carrd's section transition to settle.
+    setTimeout(scrollWhenVisible, 500);
+  }
   const widgets = new Map();
   let paintingPreview;
   function buildDialog() {
@@ -79,6 +123,7 @@
       #cc-checkout a { color:#63388f; text-decoration:underline; display:inline-block; padding:8px 0; }
       #cc-checkout [hidden] { display:none !important; }
       #cc-checkout iframe { width:100%; border:0; }
+      #cc-checkout [data-slots] { min-height:425px; }
       #cc-checkout .cc-painting-preview { padding:0 20px 20px; }
       #cc-checkout .cc-painting-preview img { display:block; width:100%; height:240px; object-fit:contain; margin:0 0 16px; }
       #cc-checkout .cc-painting-preview h3 { margin:18px 0 8px; font-size:12px; font-weight:800; letter-spacing:.08em; }
@@ -87,6 +132,11 @@
       #cc-checkout .cc-painting-age { display:inline-block; margin:0 0 18px; padding:7px 10px; border-radius:5px; background:#f1f1f1; font-size:11px; font-weight:800; }
       #cc-checkout .cc-painting-preview a { display:block; padding:12px; text-align:center; color:white;
         background:linear-gradient(90deg,#7447a8,#d84c9a,#16acc7); border-radius:7px; text-decoration:none; font-weight:700; }
+      #cc-checkout .cc-faq-link, #cc-checkout .cc-painting-preview a.cc-faq-link { display:block; background:none; color:#63388f; padding:8px 0 14px; font-size:13px; text-align:center; text-decoration:underline; }
+      #cc-checkout summary { cursor:pointer; padding:8px 0; color:#63388f; }
+      #cc-checkout .cc-loading::before { content:""; display:inline-block; width:14px; height:14px; margin-right:9px; vertical-align:middle; border:2px solid #e9def2; border-top-color:#7447a8; border-radius:50%; animation:cc-spin .8s linear infinite; }
+      @keyframes cc-spin { to { transform:rotate(360deg); } }
+      @media (prefers-reduced-motion:reduce) { #cc-checkout .cc-loading::before { animation:none; } }
       #cc-checkout :focus-visible { outline:3px solid #16acc7; outline-offset:3px; }
     `;
     document.head.appendChild(style);
@@ -96,9 +146,10 @@
     dialog.innerHTML = `<div class="cc-checkout-header"><h2 id="cc-checkout-title"></h2>
       <button type="button" aria-label="Close checkout" autofocus>×</button></div>
       <div class="cc-checkout-help"><p role="status" aria-live="polite"></p>
-      <p>Checkout blank or having trouble?</p>
+      <a class="cc-faq-link" data-cc-faq data-success-faq href="${faqURL}" target="_top" hidden>Before you arrive: View FAQs</a>
+      <details data-recovery><summary>Need help?</summary>
       <a data-full-page target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Open checkout in a new tab</a>
-      <span data-separator> · </span><a data-direct target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Continue on Eventbrite</a></div>
+      <span data-separator> · </span><a data-direct target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Continue on Eventbrite</a></details></div>
       <div data-slots></div>`;
     document.body.appendChild(dialog);
     title = dialog.querySelector('h2');
@@ -106,10 +157,13 @@
     fullPage = dialog.querySelector('[data-full-page]');
     direct = dialog.querySelector('[data-direct]');
     slots = dialog.querySelector('[data-slots]');
+    help = dialog.querySelector('[data-recovery]');
+    successLink = dialog.querySelector('[data-success-faq]');
     dialog.querySelector('button').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
       // The native close event is queued; a quick reopen must retain the original value.
       if (!dialog.open) {
+        stopLoadingTimer();
         document.body.style.overflow = previousOverflow;
         previousOverflow = undefined;
       }
@@ -122,12 +176,13 @@
     prepare();
     buildDialog();
     selected = null;
+    stopLoadingTimer();
     dialog.querySelector("button").setAttribute("aria-label", "Close painting preview");
     title.textContent = `${event.title} — ${event.date}, ${event.time}`;
     if (!paintingPreview) {
       paintingPreview = document.createElement('div');
       paintingPreview.className = 'cc-painting-preview';
-      paintingPreview.innerHTML = '<img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
+      paintingPreview.innerHTML = '<img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a class="cc-faq-link" data-cc-faq target="_top">Questions? View FAQs</a><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
       dialog.appendChild(paintingPreview);
     }
     paintingPreview.querySelector('img').src = event.image;
@@ -147,7 +202,8 @@
     const age = paintingPreview.querySelector('.cc-painting-age');
     age.textContent = event.age || '';
     age.hidden = !event.age;
-    paintingPreview.querySelector('a').href = event.link;
+    paintingPreview.querySelector('[data-cc-faq]').href = faqURL;
+    paintingPreview.querySelector('#cc-preview-checkout').href = event.link;
     paintingPreview.hidden = false;
     slots.hidden = true;
     dialog.querySelector('.cc-checkout-help').hidden = true;
@@ -187,11 +243,12 @@
       const container = document.createElement('div');
       container.id = `eventbrite-widget-container-${id}`;
       slots.appendChild(container);
-      widget = { container, created: false };
+      widget = { container, created: false, loaded: false, completed: false, failed: false };
       widgets.set(id, widget);
     }
     widget.container.hidden = false;
-    status.textContent = widget.created ? 'Choose your tickets below. Payment is handled by Eventbrite.' : 'Loading secure checkout…';
+    widget.failed = false;
+    renderCheckout(widget);
     if (widget.created) return;
     try {
       await loadSDK();
@@ -201,7 +258,8 @@
         iframeContainerId: widget.container.id, iframeContainerHeight: 425,
         affiliateCode: new URL(event.link).searchParams.get('aff') || '',
         onOrderComplete: () => {
-          if (selected === id) status.textContent = 'Thank you! Your order is complete. Check your email for your tickets.';
+          widget.completed = true;
+          if (selected === id && dialog.open && !slots.hidden) renderCheckout(widget);
         }
       });
       const frame = widget.container.querySelector('iframe');
@@ -209,10 +267,15 @@
       frame.title = `Eventbrite checkout for ${event.title}, ${event.date} ${event.time}`;
       frame.referrerPolicy = 'origin-when-cross-origin';
       widget.created = true;
-      // Cross-origin iframe load is not proof that checkout or payment succeeded.
-      status.textContent = 'Choose your tickets below. Payment is handled by Eventbrite.';
+      // A frame load is a transport signal, not proof tickets rendered or an order succeeded.
+      // Keep recovery available and use neutral text rather than declaring checkout ready.
+      frame.addEventListener('load', () => {
+        widget.loaded = true;
+        if (selected === id && dialog.open && !slots.hidden) renderCheckout(widget);
+      }, { once: true });
     } catch {
-      if (selected === id && dialog.open) status.textContent = 'Secure checkout could not load. Please use one of the links below.';
+      widget.failed = true;
+      if (selected === id && dialog.open && !slots.hidden) renderCheckout(widget);
     }
   }
 
@@ -261,6 +324,12 @@
   document.addEventListener('click', click => {
     if (click.defaultPrevented || click.button !== 0 || click.metaKey || click.ctrlKey || click.shiftKey || click.altKey || !supported) return;
     const link = click.target.closest('a');
+    if (link?.matches('[data-cc-faq]')) {
+      if (window.self === window.top && document.getElementById('cc-faq')) {
+        click.preventDefault(); revealFAQ();
+      }
+      return; // Else use the real homepage link at the top level.
+    }
     if (!link?.matches('#overviewTicket, #cc-preview-checkout, #cc-events-preview [data-role="tickets"], .cc-event-card')) return;
     const id = linkId(link.href);
     const event = records().find(item => id && eventId(item) === id);
@@ -271,6 +340,10 @@
   });
 
   window.CanvasCocktailsCheckout = { open, eventId, prepare };
+  if (window.self === window.top && new URL(location.href).searchParams.get('view') === 'faq') {
+    if (document.readyState === 'complete') revealFAQ();
+    else window.addEventListener('load', revealFAQ, { once: true });
+  }
   const requested = new URL(location.href).searchParams.get('checkout');
   const event = records().find(item => requested && eventId(item) === requested);
   if (event && window.self === window.top) {
