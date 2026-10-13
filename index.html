@@ -955,6 +955,12 @@
 
         <p class="overview-description">🍸 Full service bar with a bartender. <strong>Drinks sold separately.</strong></p>
 
+        <section id="overviewVisit" style="margin:16px 0;color:#222;font-size:13px;line-height:1.6">
+          <h3 class="overview-subtitle">PLAN YOUR VISIT</h3>
+          <p id="overviewVenue"></p>
+          <a id="overviewDirections" target="_blank" rel="noopener" style="display:inline-block;color:#63388f;padding:4px 0 10px;text-decoration:underline">Get Directions</a>
+          <p id="overviewArrival"></p>
+        </section>
         <section id="overviewNotesWrap" style="background:#f6f3fa;padding:14px;border-radius:8px;margin-bottom:16px;color:#222;font-size:13px;line-height:1.6">
           <h3 class="overview-subtitle">PLEASE NOTE</h3>
           <p id="overviewNotes"></p><strong>No refunds.</strong>
@@ -1016,7 +1022,7 @@
 
 
   <!-- Shared event information used by this calendar and the homepage preview. -->
-  <script src="events.js?v=20261013-prices"></script>
+  <script src="events.js?v=20261013-visit"></script>
   <script>
 
     /*
@@ -1213,6 +1219,12 @@
     ========================================= */
 
     function openOverview(event) {
+      document.getElementById("overviewVenue").textContent = [event.venueName, event.venueAddress].filter(Boolean).join(' · ');
+      const directions = document.getElementById("overviewDirections");
+      directions.href = event.directionsURL || '#';
+      directions.hidden = !event.directionsURL;
+      document.getElementById("overviewArrival").textContent = event.arrivalNote || '';
+      document.getElementById("overviewVisit").hidden = !event.venueAddress && !event.arrivalNote;
       document.getElementById("overviewPrice").textContent = event.priceLabel || "";
       window.CanvasCocktailsCheckout?.prepare();
       document.getElementById("overviewNotes").textContent = event.attendanceNotes || "";
