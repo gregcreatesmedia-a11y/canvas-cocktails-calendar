@@ -78,6 +78,7 @@ window.canvasCocktailsEvents = [
   }
 ].map(event => ({
   ...event,
+  calendarURL: new URL(`calendar/${event.eventbriteId}.ics`, canvasCocktailsAssetBase).href,
   venueName: "Canvas & Cocktails",
   venueAddress: "2804 Crums Lane, Louisville, KY 40216",
   directionsURL: "https://www.google.com/maps/search/?api=1&query=2804+Crums+Lane%2C+Louisville%2C+KY+40216",
@@ -118,7 +119,7 @@ window.canvasCocktailsEvents = [
   const source = document.currentScript;
   if (!source || !source.src) return;
   const script = document.createElement('script');
-  script.src = new URL('checkout.js?v=20261013-visit', source.src).href;
+  script.src = new URL('checkout.js?v=20261013-calendar', source.src).href;
   script.dataset.ccCheckout = '';
   document.head.appendChild(script);
 })();
