@@ -6,6 +6,9 @@ window.canvasCocktailsEvents = [
     date: "2026-10-23",
     title: "BoOo! Paint and Sip",
     time: "6:00 PM",
+    timeRange: "6:00 PM to 8:00 PM EDT",
+    // General Admission total verified in Eventbrite checkout October 13, 2026.
+    priceLabel: "$33.85 per person · Includes Eventbrite fees",
     image: new URL("images/booo.jpg", canvasCocktailsAssetBase).href,
     description: "A playful ghost rises from a glowing pumpkin on Halloween night.",
     includes: [
@@ -21,6 +24,9 @@ window.canvasCocktailsEvents = [
     date: "2026-10-23",
     title: "Witches Brew Paint and Sip",
     time: "9:00 PM",
+    timeRange: "9:00 PM to 11:00 PM EDT",
+    // General Admission total verified in Eventbrite checkout October 13, 2026.
+    priceLabel: "$33.85 per person · Includes Eventbrite fees",
     image: new URL("images/witches-brew.jpg", canvasCocktailsAssetBase).href,
     description: "A bubbly brew with a witch’s mischievous twist.",
     includes: [
@@ -37,6 +43,9 @@ window.canvasCocktailsEvents = [
   date: "2026-10-25",
   title: "BoOo! Paint and Sip",
   time: "3:00 PM",
+    timeRange: "3:00 PM to 5:00 PM EDT",
+    // General Admission total verified in Eventbrite checkout October 13, 2026.
+    priceLabel: "$33.85 per person · Includes Eventbrite fees",
   image: new URL("images/booo.jpg", canvasCocktailsAssetBase).href,
   description: "A playful ghost rises from a glowing pumpkin on Halloween night.",
   includes: [
@@ -53,6 +62,9 @@ window.canvasCocktailsEvents = [
     date: "2026-10-25",
     title: "Monster Mood Paint and Sip",
     time: "7:00 PM",
+    timeRange: "7:00 PM to 9:00 PM EDT",
+    // General Admission total verified in Eventbrite checkout October 13, 2026.
+    priceLabel: "$33.85 per person · Includes Eventbrite fees",
     image: new URL("images/monster-mood.jpg", canvasCocktailsAssetBase).href,
     description: "Frankenstein comes to life with bold colors and Halloween attitude.",
     includes: [
@@ -82,9 +94,18 @@ window.canvasCocktailsEvents = [
       body.style.flexDirection = "column";
       body.style.flex = "1";
       const ticket = card.querySelector('[data-role="tickets"]');
+      let price = card.querySelector('[data-role="price"]');
+      if (!price) {
+        price = document.createElement('p');
+        price.dataset.role = 'price';
+        price.style.cssText = 'color:#63388f;font-size:13px;font-weight:700;line-height:1.5;margin:8px 0';
+        card.querySelector('[data-role="meta"]').after(price);
+      }
+      price.textContent = event.priceLabel || '';
+      price.hidden = !event.priceLabel;
       ticket.style.marginTop = "auto";
       ticket.style.paddingTop = "12px";
-       const month = event.parsedDate.toLocaleDateString("en-US", { month: "short" }); const longDate = event.parsedDate.toLocaleDateString("en-US", { month: "long", day: "numeric" }); const age = String(event.age || "").replace(" Event", ""); const includes = Array.isArray(event.includes) ? event.includes.map(compact) : []; if (age) includes.push(age); card.querySelector('[data-role="month"]').textContent = month; card.querySelector('[data-role="day"]').textContent = event.parsedDate.getDate(); card.querySelector('[data-role="art-title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="meta"]').textContent = `${longDate} • ${event.time || "Time TBA"}`; card.querySelector('[data-role="description"]').textContent = event.description || "More details are coming soon."; card.querySelector('[data-role="includes"]').textContent = includes.join(" • "); const image = card.querySelector('[data-role="image"]'); if (event.image) image.src = event.image; image.alt = `${event.title || "Event"} event artwork`; const tickets = card.querySelector('[data-role="tickets"]'); tickets.textContent = "View Painting →"; tickets.href = event.link || event.url || "#events"; }); } renderHomepagePreview(); if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", renderHomepagePreview, { once: true }); } })();
+       const month = event.parsedDate.toLocaleDateString("en-US", { month: "short" }); const longDate = event.parsedDate.toLocaleDateString("en-US", { month: "long", day: "numeric" }); const age = String(event.age || "").replace(" Event", ""); const includes = Array.isArray(event.includes) ? event.includes.map(compact) : []; if (age) includes.push(age); card.querySelector('[data-role="month"]').textContent = month; card.querySelector('[data-role="day"]').textContent = event.parsedDate.getDate(); card.querySelector('[data-role="art-title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="meta"]').textContent = `${longDate} • ${event.timeRange || event.time || "Time TBA"}`; card.querySelector('[data-role="description"]').textContent = event.description || "More details are coming soon."; card.querySelector('[data-role="includes"]').textContent = includes.join(" • "); const image = card.querySelector('[data-role="image"]'); if (event.image) image.src = event.image; image.alt = `${event.title || "Event"} event artwork`; const tickets = card.querySelector('[data-role="tickets"]'); tickets.textContent = "View Painting →"; tickets.href = event.link || event.url || "#events"; }); } renderHomepagePreview(); if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", renderHomepagePreview, { once: true }); } })();
 
 
 /* Also loaded by the Carrd homepage. Resolve beside this file, not Carrd's URL. */
