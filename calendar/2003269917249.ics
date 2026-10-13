@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Canvas and Cocktails//Events//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:2003269917249@canvasandcocktailslou.com
+DTSTAMP:20261013T180000Z
+DTSTART:20261023T220000Z
+DTEND:20261024T000000Z
+SUMMARY:BoOo! Paint and Sip
+LOCATION:Canvas & Cocktails\, 2804 Crums Lane\, Louisville\, KY 40216
+DESCRIPTION:Please arrive 15 minutes early.\nFull service bar with a barten
+ der. Drinks sold separately.\nKeep your Eventbrite confirmation email for 
+ your tickets.\nFAQs: https://canvasandcocktailslou.com/?view=faq
+URL:https://www.eventbrite.com/e/2003269917249
+END:VEVENT
+END:VCALENDAR
