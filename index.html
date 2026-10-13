@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="referrer" content="origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Canvas & Cocktails Events</title>
@@ -365,11 +366,12 @@
 
     .overview-image {
       width: 100%;
-      max-height: 420px;
+      height: 260px;
+      padding: 12px;
 
       display: block;
 
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .overview-close {
@@ -789,11 +791,11 @@
 
       #overviewBackdrop .overview-image {
         width: 100%;
-        height: auto;
+        height: 240px;
 
-        max-height: 320px;
+        max-height: 240px;
 
-        object-fit: cover;
+        object-fit: contain;
       }
 
       #overviewBackdrop .overview-content {
@@ -963,7 +965,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          GET TICKETS
+          BOOK THIS EVENT
         </a>
 
       </div>
@@ -1984,7 +1986,7 @@
             "mobile-details";
 
           details.textContent =
-            "VIEW DETAILS ›";
+            "VIEW PAINTING ›";
 
 
           info.appendChild(

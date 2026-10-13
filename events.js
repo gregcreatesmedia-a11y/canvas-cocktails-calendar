@@ -13,6 +13,7 @@ window.canvasCocktailsEvents = [
       "🎟️ Entry to Surprise Raffle"
     ],
     age: "13+ with Adult",
+    eventbriteId: "2003269917249",
     link: "https://www.eventbrite.com/e/2003269917249?aff=oddtdtcreator"
   },
   {
@@ -27,6 +28,7 @@ window.canvasCocktailsEvents = [
       "🎟️ Entry to Surprise Raffle"
     ],
     age: "13+ with Adult",
+    eventbriteId: "2003269938312",
     link: "https://www.eventbrite.com/e/witches-brew-paint-and-sip-tickets-2003269938312?aff=oddtdtcreator"
   },
   
@@ -42,6 +44,7 @@ window.canvasCocktailsEvents = [
     "🎟️ Entry to surprise raffle"
   ],
   age: "13+ with Adult",
+  eventbriteId: "2003269932294",
   link: "https://www.eventbrite.com/e/2003269932294?aff=oddtdtcreator"
 },
 
@@ -57,6 +60,7 @@ window.canvasCocktailsEvents = [
       "🎟️ Entry to Surprise Raffle"
     ],
     age: "13+ with Adult",
+    eventbriteId: "2003269946336",
     link: "https://www.eventbrite.com/e/2003269946336?aff=oddtdtcreator"
   }
 ];
@@ -75,4 +79,16 @@ window.canvasCocktailsEvents = [
       const ticket = card.querySelector('[data-role="tickets"]');
       ticket.style.marginTop = "auto";
       ticket.style.paddingTop = "12px";
-       const month = event.parsedDate.toLocaleDateString("en-US", { month: "short" }); const longDate = event.parsedDate.toLocaleDateString("en-US", { month: "long", day: "numeric" }); const age = String(event.age || "").replace(" Event", ""); const includes = Array.isArray(event.includes) ? event.includes.map(compact) : []; if (age) includes.push(age); card.querySelector('[data-role="month"]').textContent = month; card.querySelector('[data-role="day"]').textContent = event.parsedDate.getDate(); card.querySelector('[data-role="art-title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="meta"]').textContent = `${longDate} • ${event.time || "Time TBA"}`; card.querySelector('[data-role="description"]').textContent = event.description || "More details are coming soon."; card.querySelector('[data-role="includes"]').textContent = includes.join(" • "); const image = card.querySelector('[data-role="image"]'); if (event.image) image.src = event.image; image.alt = `${event.title || "Event"} event artwork`; const tickets = card.querySelector('[data-role="tickets"]'); tickets.href = event.link || event.url || "#events"; }); } renderHomepagePreview(); if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", renderHomepagePreview, { once: true }); } })();
+       const month = event.parsedDate.toLocaleDateString("en-US", { month: "short" }); const longDate = event.parsedDate.toLocaleDateString("en-US", { month: "long", day: "numeric" }); const age = String(event.age || "").replace(" Event", ""); const includes = Array.isArray(event.includes) ? event.includes.map(compact) : []; if (age) includes.push(age); card.querySelector('[data-role="month"]').textContent = month; card.querySelector('[data-role="day"]').textContent = event.parsedDate.getDate(); card.querySelector('[data-role="art-title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="title"]').textContent = event.title || "Upcoming Event"; card.querySelector('[data-role="meta"]').textContent = `${longDate} • ${event.time || "Time TBA"}`; card.querySelector('[data-role="description"]').textContent = event.description || "More details are coming soon."; card.querySelector('[data-role="includes"]').textContent = includes.join(" • "); const image = card.querySelector('[data-role="image"]'); if (event.image) image.src = event.image; image.alt = `${event.title || "Event"} event artwork`; const tickets = card.querySelector('[data-role="tickets"]'); tickets.textContent = "View Painting →"; tickets.href = event.link || event.url || "#events"; }); } renderHomepagePreview(); if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", renderHomepagePreview, { once: true }); } })();
+
+
+/* Also loaded by the Carrd homepage. Resolve beside this file, not Carrd's URL. */
+(() => {
+  if (document.querySelector('script[data-cc-checkout]')) return;
+  const source = document.currentScript;
+  if (!source || !source.src) return;
+  const script = document.createElement('script');
+  script.src = new URL('checkout.js', source.src).href;
+  script.dataset.ccCheckout = '';
+  document.head.appendChild(script);
+})();
