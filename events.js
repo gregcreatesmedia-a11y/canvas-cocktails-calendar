@@ -114,7 +114,7 @@ window.canvasCocktailsEvents = [
   const source = document.currentScript;
   if (!source || !source.src) return;
   const script = document.createElement('script');
-  script.src = new URL('checkout.js?v=20261013-messages', source.src).href;
+  script.src = new URL('checkout.js?v=20261013-prices', source.src).href;
   script.dataset.ccCheckout = '';
   document.head.appendChild(script);
 })();
