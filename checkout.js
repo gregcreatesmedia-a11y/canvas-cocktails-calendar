@@ -135,6 +135,9 @@
       #cc-checkout .cc-painting-preview a { display:block; padding:12px; text-align:center; color:white;
         background:linear-gradient(90deg,#7447a8,#d84c9a,#16acc7); border-radius:7px; text-decoration:none; font-weight:700; }
       #cc-checkout .cc-faq-link, #cc-checkout .cc-painting-preview a.cc-faq-link { display:block; background:none; color:#63388f; padding:8px 0 14px; font-size:13px; text-align:center; text-decoration:underline; }
+      #cc-checkout .cc-painting-preview a.cc-directions { display:inline-block; background:none; color:#63388f; padding:4px 0 10px; text-align:left; text-decoration:underline; font-size:13px; }
+      #cc-checkout [data-visit] { margin:16px 0; font-size:13px; }
+      @media (max-width:480px) { #cc-checkout .cc-painting-preview img { height:180px; } }
       #cc-checkout summary { cursor:pointer; padding:8px 0; color:#63388f; }
       #cc-checkout .cc-loading::before { content:""; display:inline-block; width:14px; height:14px; margin-right:9px; vertical-align:middle; border:2px solid #e9def2; border-top-color:#7447a8; border-radius:50%; animation:cc-spin .8s linear infinite; }
       @keyframes cc-spin { to { transform:rotate(360deg); } }
@@ -186,7 +189,7 @@
     if (!paintingPreview) {
       paintingPreview = document.createElement('div');
       paintingPreview.className = 'cc-painting-preview';
-      paintingPreview.innerHTML = '<p class="cc-price" data-price></p><img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><p class="cc-bar-details">🍸 Full service bar with a bartender. <strong>Drinks sold separately.</strong></p><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a class="cc-faq-link" data-cc-faq target="_top">Questions? View FAQs</a><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
+      paintingPreview.innerHTML = '<p class="cc-price" data-price></p><img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><p class="cc-bar-details">🍸 Full service bar with a bartender. <strong>Drinks sold separately.</strong></p><section data-visit><h3>PLAN YOUR VISIT</h3><p data-venue></p><a class="cc-directions" data-directions target="_blank" rel="noopener">Get Directions</a><p data-arrival></p></section><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a class="cc-faq-link" data-cc-faq target="_top">Questions? View FAQs</a><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
       dialog.appendChild(paintingPreview);
     }
     paintingPreview.querySelector('[data-price]').textContent = event.priceLabel || '';
@@ -203,6 +206,12 @@
       list.appendChild(li);
     }
     paintingPreview.querySelector('[data-includes]').hidden = includes.length === 0;
+    paintingPreview.querySelector('[data-venue]').textContent = [event.venueName, event.venueAddress].filter(Boolean).join(' · ');
+    const directions = paintingPreview.querySelector('[data-directions]');
+    directions.href = event.directionsURL || '#';
+    directions.hidden = !event.directionsURL;
+    paintingPreview.querySelector('[data-arrival]').textContent = event.arrivalNote || '';
+    paintingPreview.querySelector('[data-visit]').hidden = !event.venueAddress && !event.arrivalNote;
     paintingPreview.querySelector('[data-notes] p').textContent = event.attendanceNotes || '';
     paintingPreview.querySelector('[data-notes]').hidden = !event.attendanceNotes;
     const age = paintingPreview.querySelector('.cc-painting-age');
