@@ -393,7 +393,8 @@
           </div>
           <div class="cc-event-card__body">
             <h3 class="cc-event-card__title">${escapeHTML(event.title)}</h3>
-            <p class="cc-event-card__meta">${escapeHTML(event.time)}</p>
+            <p class="cc-event-card__meta">${escapeHTML(event.timeRange || event.time)}</p>
+            <p class="cc-event-card__meta" style="color:#63388f;font-weight:700">${escapeHTML(event.priceLabel || "")}</p>
             <span class="cc-event-card__link">View Painting</span>
           </div>
         </a>`;
