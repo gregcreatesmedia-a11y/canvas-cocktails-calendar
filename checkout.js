@@ -46,6 +46,17 @@
     return sdkPromise;
   }
 
+  // Fetch only the small checkout loader while the visitor reads the overview.
+  // Ticket frames are still created only after an explicit booking click.
+  function prepare() {
+    loadSDK().catch(() => {}); // A booking click can retry a failed warmup.
+    let origin;
+    try { origin = new URL(document.referrer).origin; } catch {}
+    if (window.self !== window.top && parentOrigins.has(origin)) {
+      window.parent.postMessage({ type: 'cc-checkout-prepare' }, origin);
+    }
+  }
+
   let dialog, title, status, fullPage, direct, slots, selected, previousOverflow;
   const widgets = new Map();
   let paintingPreview;
@@ -72,6 +83,7 @@
       #cc-checkout .cc-painting-preview img { display:block; width:100%; height:240px; object-fit:contain; margin:0 0 16px; }
       #cc-checkout .cc-painting-preview h3 { margin:18px 0 8px; font-size:12px; font-weight:800; letter-spacing:.08em; }
       #cc-checkout .cc-painting-preview ul { margin:0 0 16px; padding-left:20px; list-style:disc; font-size:13px; line-height:1.7; }
+      #cc-checkout [data-notes] { background:#f6f3fa; padding:1px 14px 14px; border-radius:8px; margin:16px 0; font-size:13px; }
       #cc-checkout .cc-painting-age { display:inline-block; margin:0 0 18px; padding:7px 10px; border-radius:5px; background:#f1f1f1; font-size:11px; font-weight:800; }
       #cc-checkout .cc-painting-preview a { display:block; padding:12px; text-align:center; color:white;
         background:linear-gradient(90deg,#7447a8,#d84c9a,#16acc7); border-radius:7px; text-decoration:none; font-weight:700; }
@@ -107,13 +119,15 @@
   }
 
   function preview(event) {
+    prepare();
     buildDialog();
+    selected = null;
     dialog.querySelector("button").setAttribute("aria-label", "Close painting preview");
     title.textContent = `${event.title} — ${event.date}, ${event.time}`;
     if (!paintingPreview) {
       paintingPreview = document.createElement('div');
       paintingPreview.className = 'cc-painting-preview';
-      paintingPreview.innerHTML = '<img alt=""><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><div><span class="cc-painting-age"></span></div><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
+      paintingPreview.innerHTML = '<img alt=""><h3>OVERVIEW</h3><p></p><section data-includes><h3>WHAT\'S INCLUDED</h3><ul></ul></section><section data-notes><h3>PLEASE NOTE</h3><p></p><strong>No refunds.</strong></section><div><span class="cc-painting-age"></span></div><a id="cc-preview-checkout" target="_blank" rel="noopener">BOOK THIS EVENT</a>';
       dialog.appendChild(paintingPreview);
     }
     paintingPreview.querySelector('img').src = event.image;
@@ -128,6 +142,8 @@
       list.appendChild(li);
     }
     paintingPreview.querySelector('[data-includes]').hidden = includes.length === 0;
+    paintingPreview.querySelector('[data-notes] p').textContent = event.attendanceNotes || '';
+    paintingPreview.querySelector('[data-notes]').hidden = !event.attendanceNotes;
     const age = paintingPreview.querySelector('.cc-painting-age');
     age.textContent = event.age || '';
     age.hidden = !event.age;
@@ -231,7 +247,9 @@
       message.source.postMessage({ type: 'cc-checkout-open', eventId: eventId(pending.event) }, message.origin);
       pending = null;
     } else if (window.self === window.top && trustedCalendar(message)) {
-      if (data.type === 'cc-checkout-probe') {
+      if (data.type === 'cc-checkout-prepare') {
+        prepare();
+      } else if (data.type === 'cc-checkout-probe') {
         message.source.postMessage({ type: 'cc-checkout-ready', requestId: data.requestId }, message.origin);
       } else if (data.type === 'cc-checkout-open') {
         const event = records().find(item => eventId(item) === data.eventId);
@@ -252,7 +270,7 @@
     else preview(event);
   });
 
-  window.CanvasCocktailsCheckout = { open, eventId };
+  window.CanvasCocktailsCheckout = { open, eventId, prepare };
   const requested = new URL(location.href).searchParams.get('checkout');
   const event = records().find(item => requested && eventId(item) === requested);
   if (event && window.self === window.top) {

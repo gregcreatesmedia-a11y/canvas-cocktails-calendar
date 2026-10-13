@@ -1,11 +1,12 @@
 /* Shared event list for index.html and upcoming-events.html. Edit events here. */
 
+var canvasCocktailsAssetBase = new URL('.', document.currentScript.src);
 window.canvasCocktailsEvents = [
   {
     date: "2026-10-23",
     title: "BoOo! Paint and Sip",
     time: "6:00 PM",
-    image: "https://raw.githubusercontent.com/gregcreatesmedia-a11y/canvas-cocktails-calendar/main/images/BoOo!.JPG",
+    image: new URL("images/booo.jpg", canvasCocktailsAssetBase).href,
     description: "A playful ghost rises from a glowing pumpkin on Halloween night.",
     includes: [
       "🎨 All Painting supplies",
@@ -20,7 +21,7 @@ window.canvasCocktailsEvents = [
     date: "2026-10-23",
     title: "Witches Brew Paint and Sip",
     time: "9:00 PM",
-    image: "https://raw.githubusercontent.com/gregcreatesmedia-a11y/canvas-cocktails-calendar/main/images/Witches_Brew.JPG",
+    image: new URL("images/witches-brew.jpg", canvasCocktailsAssetBase).href,
     description: "A bubbly brew with a witch’s mischievous twist.",
     includes: [
       "🎨 All Painting supplies",
@@ -36,7 +37,7 @@ window.canvasCocktailsEvents = [
   date: "2026-10-25",
   title: "BoOo! Paint and Sip",
   time: "3:00 PM",
-  image: "https://raw.githubusercontent.com/gregcreatesmedia-a11y/canvas-cocktails-calendar/main/images/BoOo!.JPG",
+  image: new URL("images/booo.jpg", canvasCocktailsAssetBase).href,
   description: "A playful ghost rises from a glowing pumpkin on Halloween night.",
   includes: [
     "🎨 All painting supplies",
@@ -52,7 +53,7 @@ window.canvasCocktailsEvents = [
     date: "2026-10-25",
     title: "Monster Mood Paint and Sip",
     time: "7:00 PM",
-    image: "https://raw.githubusercontent.com/gregcreatesmedia-a11y/canvas-cocktails-calendar/main/images/Monster_Mood.JPG",
+    image: new URL("images/monster-mood.jpg", canvasCocktailsAssetBase).href,
     description: "Frankenstein comes to life with bold colors and Halloween attitude.",
     includes: [
       "🎨 All Painting supplies",
@@ -63,7 +64,11 @@ window.canvasCocktailsEvents = [
     eventbriteId: "2003269946336",
     link: "https://www.eventbrite.com/e/2003269946336?aff=oddtdtcreator"
   }
-];
+].map(event => ({
+  ...event,
+  // Copied from each Eventbrite overview, verified October 12, 2026.
+  attendanceNotes: "Guests ages 13 and up are welcome. Anyone under 18 must be accompanied by an adult. Guests purchasing or consuming alcohol must be 21 or older and present a valid photo ID."
+}));
 
 /* Carrd may execute its inline preview before this external file loads.
    Render when the data arrives, and again when the document is ready. */
@@ -88,7 +93,7 @@ window.canvasCocktailsEvents = [
   const source = document.currentScript;
   if (!source || !source.src) return;
   const script = document.createElement('script');
-  script.src = new URL('checkout.js', source.src).href;
+  script.src = new URL('checkout.js?v=20261012-overview', source.src).href;
   script.dataset.ccCheckout = '';
   document.head.appendChild(script);
 })();

@@ -933,6 +933,7 @@
           <span id="overviewTime"></span>
         </div>
 
+        <h3 class="overview-subtitle">OVERVIEW</h3>
         <p
           id="overviewDescription"
           class="overview-description"
@@ -951,6 +952,10 @@
 
         </div>
 
+        <section id="overviewNotesWrap" style="background:#f6f3fa;padding:14px;border-radius:8px;margin-bottom:16px;color:#222;font-size:13px;line-height:1.6">
+          <h3 class="overview-subtitle">PLEASE NOTE</h3>
+          <p id="overviewNotes"></p><strong>No refunds.</strong>
+        </section>
         <div>
           <span
             id="overviewAge"
@@ -1007,7 +1012,7 @@
 
 
   <!-- Shared event information used by this calendar and the homepage preview. -->
-  <script src="events.js?v=20261012-checkout"></script>
+  <script src="events.js?v=20261012-overview"></script>
   <script>
 
     /*
@@ -1204,6 +1209,9 @@
     ========================================= */
 
     function openOverview(event) {
+      window.CanvasCocktailsCheckout?.prepare();
+      document.getElementById("overviewNotes").textContent = event.attendanceNotes || "";
+      document.getElementById("overviewNotesWrap").hidden = !event.attendanceNotes;
 
       overviewImage.src =
         event.image;
