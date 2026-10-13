@@ -123,3 +123,52 @@ window.canvasCocktailsEvents = [
   script.dataset.ccCheckout = '';
   document.head.appendChild(script);
 })();
+
+// Match title and date heights within each visible row without shortening names.
+(() => {
+  if (window.ccPreviewAlignmentReady) return;
+  window.ccPreviewAlignmentReady = true;
+  let frame;
+  function align() {
+    const cards = Array.from(document.querySelectorAll('#cc-events-preview [data-event-card]'));
+    const roles = ['title', 'meta'];
+    for (const card of cards) for (const role of roles) {
+      const item = card.querySelector(`[data-role="${role}"]`);
+      if (item) { item.style.minHeight = ''; item.style.flexShrink = '0'; }
+    }
+    const rows = new Map();
+    for (const card of cards) {
+      if (card.hidden || !card.getClientRects().length) continue;
+      const top = Math.round(card.getBoundingClientRect().top);
+      if (!rows.has(top)) rows.set(top, []);
+      rows.get(top).push(card);
+    }
+    for (const row of rows.values()) {
+      if (row.length < 2) continue;
+      for (const role of roles) {
+        const items = row.map(card => card.querySelector(`[data-role="${role}"]`)).filter(Boolean);
+        const height = Math.max(0, ...items.map(item => item.getBoundingClientRect().height));
+        for (const item of items) item.style.minHeight = `${height}px`;
+      }
+    }
+  }
+  function schedule() { cancelAnimationFrame(frame); frame = requestAnimationFrame(align); }
+  function start() {
+    const preview = document.getElementById('cc-events-preview');
+    if (!preview) return;
+    schedule();
+    if (typeof ResizeObserver !== 'undefined') {
+      let previousWidth = -1;
+      new ResizeObserver(entries => {
+        const width = entries[0].contentRect.width;
+        if (width !== previousWidth) { previousWidth = width; schedule(); }
+      }).observe(preview);
+    }
+    document.fonts?.ready.then(schedule);
+    document.fonts?.addEventListener('loadingdone', schedule);
+    window.addEventListener('resize', schedule);
+    window.addEventListener('pageshow', schedule);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, {once:true});
+  else start();
+})();
