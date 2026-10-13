@@ -59,18 +59,20 @@
 
   const faqURL = 'https://canvasandcocktailslou.com/?view=faq';
   let dialog, title, status, fullPage, direct, slots, selected, previousOverflow;
-  let help, successLink, loadingTimer;
+  let help, successLink, calendarLink, loadingTimer;
   function stopLoadingTimer() { clearTimeout(loadingTimer); }
   function renderCheckout(widget) {
     stopLoadingTimer();
     const complete = widget.completed;
     status.classList.toggle('cc-loading', !complete && !widget.loaded && !widget.failed);
     status.textContent = complete
-      ? 'You’re booked! 🎨🥂 Thanks for choosing Canvas & Cocktails. Check your email for your tickets—we can’t wait to paint with you!'
+      ? 'You’re booked! 🎨🥂 Thanks for joining us! Check your inbox for your tickets. We can’t wait to see you at Canvas & Cocktails!'
       : widget.failed ? 'Your tickets could not load. Please use one of the checkout links below.'
       : widget.loaded ? 'Secure checkout by Eventbrite.'
       : 'Loading your tickets… This may take a few seconds.';
     successLink.hidden = !complete;
+    calendarLink.hidden = !complete || !widget.calendarURL;
+    calendarLink.href = widget.calendarURL || '#';
     help.hidden = !!complete;
     help.open = !!widget.failed;
     help.querySelector('summary').textContent = widget.failed ? 'Open checkout another way' : 'Need help?';
@@ -152,6 +154,7 @@
       <button type="button" aria-label="Close checkout" autofocus>×</button></div>
       <div class="cc-checkout-help"><p role="status" aria-live="polite"></p>
       <a class="cc-faq-link" data-cc-faq data-success-faq href="${faqURL}" target="_top" hidden>Before you arrive: View FAQs</a>
+      <a class="cc-faq-link" data-calendar target="_blank" rel="noopener" hidden>Add to Calendar</a>
       <details data-recovery><summary>Need help?</summary>
       <a data-full-page target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Open checkout in a new tab</a>
       <span data-separator> · </span><a data-direct target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Continue on Eventbrite</a></details></div>
@@ -164,6 +167,7 @@
     slots = dialog.querySelector('[data-slots]');
     help = dialog.querySelector('[data-recovery]');
     successLink = dialog.querySelector('[data-success-faq]');
+    calendarLink = dialog.querySelector('[data-calendar]');
     dialog.querySelector('button').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
       // The native close event is queued; a quick reopen must retain the original value.
@@ -260,7 +264,7 @@
       const container = document.createElement('div');
       container.id = `eventbrite-widget-container-${id}`;
       slots.appendChild(container);
-      widget = { container, created: false, loaded: false, completed: false, failed: false };
+      widget = { container, calendarURL: event.calendarURL, created: false, loaded: false, completed: false, failed: false };
       widgets.set(id, widget);
     }
     widget.container.hidden = false;
