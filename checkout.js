@@ -72,7 +72,14 @@
       : 'Loading your tickets… This may take a few seconds.';
     successLink.hidden = !complete;
     calendarLink.hidden = !complete || !widget.calendarURL;
-    calendarLink.href = widget.calendarURL || '#';
+
+    calendarLink.querySelector('[data-calendar-options]').hidden = !widget.calendar;
+    calendarLink.querySelector('[data-calendar-status]').textContent = widget.calendar ? 'Review the event in your calendar, choose where to save it, then tap Add or Save.' : widget.calendarFailed ? 'Calendar options could not load. Close and reopen checkout to try again.' : 'Loading calendar options…';
+    if (widget.calendar) {
+      for (const name of ['google', 'outlook', 'file']) calendarLink.querySelector(`[data-calendar-${name}]`).href = widget.calendar[name];
+      calendarLink.querySelector('[data-calendar-native]').href = widget.calendar.file;
+      calendarLink.querySelector('[data-calendar-file]').download = widget.calendar.filename;
+    }
     help.hidden = !!complete;
     help.open = !!widget.failed;
     help.querySelector('summary').textContent = widget.failed ? 'Open checkout another way' : 'Need help?';
@@ -83,6 +90,36 @@
         status.textContent = 'Still loading? Open checkout in a new tab.';
         help.open = true;
       }, 12000);
+    }
+  }
+
+  async function prepareCalendar(widget) {
+    if (!widget.calendarURL || widget.calendar || widget.calendarLoading) return;
+    widget.calendarLoading = true;
+    widget.calendarFailed = false;
+    try {
+      const response = await fetch(widget.calendarURL);
+      if (!response.ok) throw new Error('Calendar unavailable');
+      const text = await response.text();
+      const unfolded = text.replace(/\r?\n[ \t]/g, '');
+      const field = name => unfolded.match(new RegExp('^' + name + ':(.*)$', 'm'))?.[1].trim();
+      const start = field('DTSTART'), end = field('DTEND');
+      if (!/^\d{8}T\d{6}Z$/.test(start || '') || !/^\d{8}T\d{6}Z$/.test(end || '')) throw new Error('Missing dates');
+      const decode = value => (value || '').replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1');
+      const title = decode(field('SUMMARY')), location = decode(field('LOCATION'));
+      const details = decode(field('DESCRIPTION'));
+      const iso = value => value.replace(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/, '$1-$2-$3T$4:$5:$6Z');
+      const google = new URL('https://calendar.google.com/calendar/render');
+      google.search = new URLSearchParams({action:'TEMPLATE', text:title, dates:start + '/' + end, location, details});
+      const outlook = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
+      outlook.search = new URLSearchParams({path:'/calendar/action/compose', rru:'addevent', subject:title, startdt:iso(start), enddt:iso(end), location, body:details});
+      widget.calendar = {google:google.href, outlook:outlook.href,
+        file:URL.createObjectURL(new Blob([text], {type:'text/calendar;charset=utf-8'})),
+        filename: title.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') + '-' + start.slice(0,8) + '.ics'};
+    } catch { widget.calendarFailed = true; }
+    finally {
+      widget.calendarLoading = false;
+      if (widgets.get(selected) === widget && dialog.open && !slots.hidden) renderCheckout(widget);
     }
   }
 
@@ -138,6 +175,9 @@
         background:linear-gradient(90deg,#7447a8,#d84c9a,#16acc7); border-radius:7px; text-decoration:none; font-weight:700; }
       #cc-checkout .cc-faq-link, #cc-checkout .cc-painting-preview a.cc-faq-link { display:block; background:none; color:#63388f; padding:8px 0 14px; font-size:13px; text-align:center; text-decoration:underline; }
       #cc-checkout .cc-painting-preview a.cc-directions { display:inline-block; background:none; color:#63388f; padding:4px 0 10px; text-align:left; text-decoration:underline; font-size:13px; }
+      #cc-checkout a.cc-calendar-primary { display:inline-block; padding:8px 0; color:#63388f; text-decoration:underline; font-weight:600; }
+      #cc-checkout [data-calendar-status] { font-size:13px; }
+      #cc-checkout [data-calendar-android] { font-size:12px; font-style:italic; line-height:1.5; color:#555; margin:0 0 8px; }
       #cc-checkout [data-visit] { margin:16px 0; font-size:13px; }
       @media (max-width:480px) { #cc-checkout .cc-painting-preview img { height:180px; } }
       #cc-checkout summary { cursor:pointer; padding:8px 0; color:#63388f; }
@@ -154,7 +194,16 @@
       <button type="button" aria-label="Close checkout" autofocus>×</button></div>
       <div class="cc-checkout-help"><p role="status" aria-live="polite"></p>
       <a class="cc-faq-link" data-cc-faq data-success-faq href="${faqURL}" target="_top" hidden>Before you arrive: View FAQs</a>
-      <a class="cc-faq-link" data-calendar target="_blank" rel="noopener" hidden>Add to Calendar</a>
+      <section data-calendar hidden aria-label="Save this event">
+      <div data-calendar-options hidden>
+      <a class="cc-calendar-primary" data-calendar-native target="_blank" rel="noopener">Add to Calendar</a>
+      <p data-calendar-android hidden><em>For Android users: Tap to download, then open the file with your calendar and save.</em></p>
+      <details><summary>Other calendar options</summary>
+      <a data-calendar-google target="_blank" rel="noopener">Google Calendar</a><br>
+      <a data-calendar-outlook target="_blank" rel="noopener">Outlook</a><br>
+      <a data-calendar-file download>Download calendar file</a>
+      <p>If your calendar does not open, download the file and open it in your calendar app. On iPhone, try Safari.</p></details></div>
+      <p data-calendar-status role="status"></p></section>
       <details data-recovery><summary>Need help?</summary>
       <a data-full-page target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Open checkout in a new tab</a>
       <span data-separator> · </span><a data-direct target="_blank" rel="noopener" referrerpolicy="origin-when-cross-origin">Continue on Eventbrite</a></details></div>
@@ -168,6 +217,7 @@
     help = dialog.querySelector('[data-recovery]');
     successLink = dialog.querySelector('[data-success-faq]');
     calendarLink = dialog.querySelector('[data-calendar]');
+    calendarLink.querySelector('[data-calendar-android]').hidden = !/Android/i.test(window.navigator?.userAgent || '');
     dialog.querySelector('button').addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => {
       // The native close event is queued; a quick reopen must retain the original value.
@@ -270,6 +320,7 @@
     widget.container.hidden = false;
     widget.failed = false;
     renderCheckout(widget);
+    prepareCalendar(widget);
     if (widget.created) return;
     try {
       await loadSDK();
