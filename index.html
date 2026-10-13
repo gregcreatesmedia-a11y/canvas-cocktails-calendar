@@ -933,6 +933,7 @@
           <span id="overviewTime"></span>
         </div>
 
+        <p id="overviewPrice" class="overview-description" style="color:#63388f;font-weight:700"></p>
         <h3 class="overview-subtitle">OVERVIEW</h3>
         <p
           id="overviewDescription"
@@ -951,6 +952,8 @@
           ></ul>
 
         </div>
+
+        <p class="overview-description">🍸 Full service bar with a bartender. <strong>Drinks sold separately.</strong></p>
 
         <section id="overviewNotesWrap" style="background:#f6f3fa;padding:14px;border-radius:8px;margin-bottom:16px;color:#222;font-size:13px;line-height:1.6">
           <h3 class="overview-subtitle">PLEASE NOTE</h3>
@@ -1210,6 +1213,7 @@
     ========================================= */
 
     function openOverview(event) {
+      document.getElementById("overviewPrice").textContent = event.priceLabel || "";
       window.CanvasCocktailsCheckout?.prepare();
       document.getElementById("overviewNotes").textContent = event.attendanceNotes || "";
       document.getElementById("overviewNotesWrap").hidden = !event.attendanceNotes;
@@ -1229,7 +1233,7 @@
         );
 
       overviewTime.textContent =
-        event.time;
+        event.timeRange || event.time;
 
       overviewDescription.textContent =
         event.description || "";
@@ -1400,7 +1404,7 @@
             );
 
           time.textContent =
-            event.time;
+            event.timeRange || event.time;
 
 
           info.appendChild(
@@ -1695,7 +1699,7 @@
             );
 
           eventTime.textContent =
-            event.time;
+            event.timeRange || event.time;
 
 
           copy.appendChild(
@@ -1983,7 +1987,7 @@
             "mobile-time";
 
           time.textContent =
-            event.time;
+            event.timeRange || event.time;
 
 
           const details =
